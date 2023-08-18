@@ -1,7 +1,12 @@
 import React, { useEffect, useRef } from "react";
 import Script from "next/script";
 import { NaverMap, Coordinates } from "~/types/map";
-import { ArrowLeftIcon, IconButton, toast } from "loplat-ui";
+import {
+  ArrowLeftIcon,
+  IconButton,
+  NotificationNewIcon,
+  toast,
+} from "loplat-ui";
 import Link from "next/link";
 import { mutate } from "swr";
 
@@ -50,7 +55,7 @@ const Map = ({
     };
   }, []);
 
-  /** GPS */
+  /** GPS **/
   useEffect(() => {
     const options = {
       enableHighAccuracy: true,
@@ -65,9 +70,6 @@ const Map = ({
         new naver.maps.LatLng(coords.latitude, coords.longitude)
       );
       toast.info(`오차 범위는 ${Math.round(coords.accuracy)}m 입니다.`);
-
-      // vibrate
-      window.navigator.vibrate(200);
     }
 
     function error() {
@@ -82,6 +84,28 @@ const Map = ({
       clearInterval(timer);
     };
   }, []);
+
+  /** notification **/
+  function notifyMe() {
+    if (!("Notification" in window)) {
+      // Check if the browser supports notifications
+      alert("This browser does not support desktop notification");
+    } else if (Notification.permission === "granted") {
+      // Check whether notification permissions have already been granted;
+      // if so, create a notification
+      const notification = new Notification("Hi there!");
+      // …
+    } else if (Notification.permission !== "denied") {
+      // We need to ask the user for permission
+      Notification.requestPermission().then((permission) => {
+        // If the user accepts, let's create a notification
+        if (permission === "granted") {
+          const notification = new Notification("Hi there!");
+          // …
+        }
+      });
+    }
+  }
 
   return (
     <>
@@ -103,6 +127,16 @@ const Map = ({
           <ArrowLeftIcon size={20} suffixForId="back" />
         </IconButton>
       </Link>
+      <IconButton
+        style={{
+          position: "absolute",
+          top: 16,
+          left: 80,
+        }}
+        onClick={notifyMe}
+      >
+        <NotificationNewIcon size={20} suffixForId="noti" />
+      </IconButton>
       <style jsx>
         {`
           .naverMap {
