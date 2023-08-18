@@ -4,14 +4,28 @@ import { NaverMap, Coordinates } from "~/types/map";
 type Marker = {
   map: NaverMap;
   coordinates: Coordinates;
-  icon?: ImageIcon;
+  icon?: ContentIcon;
   onClick?: () => void;
 };
-export type ImageIcon = {
-  url: string;
+export interface ContentIcon {
+  content: string;
   size?: naver.maps.Size;
   scaledSize?: naver.maps.Size;
-};
+  anchor: naver.maps.Point;
+}
+
+export function generateParentMarkerIcon(text: string): ContentIcon {
+  const size = 60;
+  return {
+    content: [
+      `<div style="width: ${size}px; height: ${size}px; border-radius: 50%;
+                           display: flex; align-items: center; justify-content: center">`,
+      `<img src="/icon/footprint.svg" width="20" height="20" alt="발" />`,
+      `</div>`,
+    ].join(""),
+    anchor: new naver.maps.Point(size / 2, size / 2),
+  };
+}
 
 const Marker = ({ map, coordinates, icon, onClick }: Marker): null => {
   useEffect(() => {
@@ -21,7 +35,7 @@ const Marker = ({ map, coordinates, icon, onClick }: Marker): null => {
       marker = new naver.maps.Marker({
         map: map,
         position: new naver.maps.LatLng(...coordinates),
-        // icon,
+        icon,
       });
     }
 

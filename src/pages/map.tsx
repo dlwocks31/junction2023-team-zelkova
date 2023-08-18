@@ -1,7 +1,7 @@
 import { NextSeo } from "next-seo";
 import { useState } from "react";
 import useSWR from "swr";
-import Marker from "~/components/map/Marker";
+import Marker, { generateParentMarkerIcon } from "~/components/map/Marker";
 import { Coordinates } from "~/types/map";
 import { api } from "~/utils/api";
 import Map from "../components/map/Map";
@@ -24,8 +24,13 @@ export default function MapPage() {
       >
         <Map onLoad={setMap} />
         {map && currentLocation && (
-          <Marker map={map} coordinates={currentLocation} />
+          <Marker
+            map={map}
+            coordinates={currentLocation}
+            icon={generateParentMarkerIcon("10")}
+          />
         )}
+
         {/** TODO: make restaurant look different */}
         {map &&
           restaurant.data?.map((item) => (
