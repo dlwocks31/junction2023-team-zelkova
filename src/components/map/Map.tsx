@@ -1,7 +1,9 @@
 import React, { useEffect, useRef } from "react";
 import Script from "next/script";
 import { NaverMap, Coordinates } from "~/types/map";
-import { toast } from "loplat-ui";
+import { ArrowLeftIcon, IconButton, toast } from "loplat-ui";
+import Link from "next/link";
+import { mutate } from "swr";
 
 export const INITIAL_CENTER: Coordinates = [37.5262411, 126.99289439];
 export const INITIAL_ZOOM = 16;
@@ -58,6 +60,7 @@ const Map = ({
 
     function success(pos: GeolocationPosition) {
       const coords = pos.coords;
+      mutate("current", [coords.latitude, coords.longitude]);
       mapRef.current?.setCenter(
         new naver.maps.LatLng(coords.latitude, coords.longitude)
       );
@@ -86,6 +89,17 @@ const Map = ({
         onReady={initializeMap}
       />
       <div id={mapId} className="naverMap" />
+      <Link href="/">
+        <IconButton
+          style={{
+            position: "absolute",
+            top: 16,
+            left: 16,
+          }}
+        >
+          <ArrowLeftIcon size={20} suffixForId="back" />
+        </IconButton>
+      </Link>
       <style jsx>
         {`
           .naverMap {
