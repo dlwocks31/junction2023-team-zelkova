@@ -1,9 +1,10 @@
 import React, { useEffect, useRef } from "react";
 import Script from "next/script";
 import { NaverMap, Coordinates } from "~/types/map";
+import { toast } from "loplat-ui";
 
 export const INITIAL_CENTER: Coordinates = [37.5262411, 126.99289439];
-export const INITIAL_ZOOM = 10;
+export const INITIAL_ZOOM = 16;
 
 type Props = {
   initialCenter?: Coordinates;
@@ -44,6 +45,35 @@ const Map = ({
   useEffect(() => {
     return () => {
       mapRef.current?.destroy();
+    };
+  }, []);
+
+  /** GPS */
+  useEffect(() => {
+    const options = {
+      enableHighAccuracy: true,
+      timeout: 1000 * 5,
+      maximumAge: 0,
+    };
+
+    function success(pos: GeolocationPosition) {
+      const coords = pos.coords;
+      mapRef.current?.setCenter(
+        new naver.maps.LatLng(coords.latitude, coords.longitude)
+      );
+      toast.info(`오차 범위는 ${Math.round(coords.accuracy)}m 입니다.`);
+    }
+
+    function error() {
+      toast.danger("현재 위치를 파악할 수 없습니다.");
+    }
+
+    const timer = setInterval(() => {
+      navigator.geolocation.getCurrentPosition(success, error, options);
+    }, 3000);
+
+    return () => {
+      clearInterval(timer);
     };
   }, []);
 
