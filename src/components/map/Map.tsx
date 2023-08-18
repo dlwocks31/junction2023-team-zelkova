@@ -65,6 +65,9 @@ const Map = ({
         new naver.maps.LatLng(coords.latitude, coords.longitude)
       );
       toast.info(`오차 범위는 ${Math.round(coords.accuracy)}m 입니다.`);
+
+      // vibrate
+      window.navigator.vibrate(200);
     }
 
     function error() {
