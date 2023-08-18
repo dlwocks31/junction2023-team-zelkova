@@ -40,3 +40,12 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
+
+# IDE
+.idea
+
+# PWA
+public/workbox-*.js
+public/workbox-*.js.map
+public/sw.js
+public/sw.js.map
