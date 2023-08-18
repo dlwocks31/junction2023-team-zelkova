@@ -4,11 +4,12 @@ import Map from "../components/map/Map";
 import { useState } from "react";
 import Marker from "~/components/map/Marker";
 import useSWR from "swr";
+import { Coordinates } from "~/types/map";
 
 export default function MapPage() {
   const hello = api.example.hello.useQuery({ text: "from tRPC" });
   const [map, setMap] = useState<null | naver.maps.Map>(null);
-  const { data: currentLocation } = useSWR("current");
+  const { data: currentLocation } = useSWR<Coordinates>("current");
 
   return (
     <>
