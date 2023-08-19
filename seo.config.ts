@@ -1,7 +1,7 @@
 import { DefaultSeoProps } from "next-seo";
 
 const config: DefaultSeoProps = {
-  titleTemplate: "%s | Junction Asia 2022",
+  titleTemplate: "%s | Junction Asia 2023",
   openGraph: {
     type: "website",
     site_name: "pick-up-bob",
@@ -40,7 +40,7 @@ const config: DefaultSeoProps = {
   additionalMetaTags: [
     {
       name: "description",
-      content: "Junction Asia 2022 AWS GameTech",
+      content: "Junction Asia 2023 CNT TECH",
     },
     {
       name: "application-name",
@@ -70,7 +70,7 @@ const config: DefaultSeoProps = {
     },
     {
       name: "theme-color",
-      content: "#D5EAFA",
+      content: "#2E6AC8",
     },
   ],
 };
