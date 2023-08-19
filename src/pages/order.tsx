@@ -5,7 +5,13 @@ import { useRouter } from "next/router";
 
 export default function Order() {
   const [pageState, setPageState] = useState("menu");
+  const [clickCounts, setClickCounts] = useState({
+    option1: 0,
+    option2: 0,
+    option3: 0,
+  });
   const router = useRouter();
+  type OptionType = "option1" | "option2" | "option3";
 
   const handleButtonClick = () => {
     switch (pageState) {
@@ -18,26 +24,77 @@ export default function Order() {
     }
   };
 
-  const getImageSrc = () => {
+  const handleImageClick = (option: OptionType) => {
+    setClickCounts((prev) => ({ ...prev, [option]: prev[option] + 1 }));
+  };
+
+  const getTotalClicks = () => {
+    return clickCounts.option1 + clickCounts.option2 + clickCounts.option3;
+  };
+
+  const getImageSrcs = () => {
     switch (pageState) {
       case "menu":
-        return "/image/menuView.png";
+        return [
+          "/image/menuHeadView.png",
+          "/image/menuOption1.png",
+          "/image/menuOption2.png",
+          "/image/menuOption3.png",
+          "/image/menuFootView.png",
+        ];
       case "order":
-        return "/image/orderView.png";
+        return ["/image/orderView.png"];
       default:
-        return "/image/menuView.png";
+        return [
+          "/image/menuHeadView.png",
+          "/image/menuOption1.png",
+          "/image/menuOption2.png",
+          "/image/menuOption3.png",
+          "/image/menuFootView.png",
+        ];
+    }
+  };
+
+  const imageStyle = (src: string) => {
+    if (src.includes("menuOption")) {
+      return {
+        width: "100%",
+        marginTop: "10px",
+        cursor: "pointer",
+      };
+    } else {
+      return { width: "100%" };
     }
   };
 
   const getButtonText = () => {
     switch (pageState) {
       case "menu":
+        if (getTotalClicks() == 1) {
+          return `Order ${getTotalClicks()} Menu`;
+        } else if (getTotalClicks() > 1) {
+          return `Order ${getTotalClicks()} Menus`;
+        }
         return "Order";
       case "order":
         return "Pay 21,800 won";
       default:
         return "Order";
     }
+  };
+
+  const getButtonStyle = () => {
+    if (getTotalClicks() > 0) {
+      return {
+        backgroundColor: "#2e6ac8",
+        borderColor: "#2e6ac8",
+      };
+    }
+
+    return {
+      background: "#c1c1c1",
+      border: "2px solid #c1c1c1",
+    };
   };
 
   return (
@@ -51,8 +108,24 @@ export default function Order() {
           overflow: "hidden",
         }}
       >
-        <img src={getImageSrc()} alt="" style={{ width: "100%" }} />
-        <button className="button" onClick={handleButtonClick}>
+        {getImageSrcs().map((src, index) => (
+          <img
+            key={index}
+            src={src}
+            alt=""
+            style={imageStyle(src)}
+            onClick={() => {
+              if (src.includes("menuOption1")) handleImageClick("option1");
+              if (src.includes("menuOption2")) handleImageClick("option2");
+              if (src.includes("menuOption3")) handleImageClick("option3");
+            }}
+          />
+        ))}
+        <button
+          className="button"
+          onClick={handleButtonClick}
+          style={getButtonStyle()}
+        >
           {getButtonText()}
         </button>
       </main>
