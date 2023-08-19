@@ -6,11 +6,11 @@ export default function ChatIndex() {
   const sendMessageMutation = api.getRestaurantSuggestion.useMutation();
   const restaurants = api.findAllRestaurant.useQuery({});
   const getNextMessage = async ({
-    message,
+    allMessages,
   }: {
-    message: string;
+    allMessages: Message[];
   }): Promise<Message> => {
-    const data = await sendMessageMutation.mutateAsync({ text: message });
+    const data = await sendMessageMutation.mutateAsync(allMessages);
     if (data.showSuggestion) {
       const { message, suggestion } = data;
       if (!message || !suggestion)

@@ -4,7 +4,7 @@ const openai = new OpenAI();
 
 export const openaiStream = (
   model: "gpt-4" | "gpt-3.5-turbo",
-  messages: { role: "system" | "user"; content: string }[],
+  messages: { role: "system" | "user" | "assistant"; content: string }[],
   encode = true
 ) => {
   const encoder = new TextEncoder();
@@ -30,7 +30,7 @@ export const openaiStream = (
 
 export const openaiNonStream = (
   model: "gpt-4" | "gpt-3.5-turbo",
-  messages: { role: "system" | "user"; content: string }[]
+  messages: { role: "system" | "user" | "assistant"; content: string }[]
 ) => {
   return openai.chat.completions.create({
     messages,
