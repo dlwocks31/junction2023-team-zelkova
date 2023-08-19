@@ -34,7 +34,7 @@ export const restaurantData: Restaurant[] = [
     longitude: 129.1319517,
   },
   {
-    name: "Paik’s Pakboy Pizza",
+    name: "Paik's Pakboy Pizza",
     distance: 12,
     picked: 87,
     crowdDegree: 3,
