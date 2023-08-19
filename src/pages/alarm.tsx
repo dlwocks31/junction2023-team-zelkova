@@ -1,12 +1,53 @@
 import { NextSeo } from "next-seo";
 import { useRouter } from "next/router";
+import { toast } from "loplat-ui";
 
 export default function AlarmPage() {
   const router = useRouter();
 
   const navigateToMap = () => {
     router.push("/map");
+    toast.success("I'll let you know when it's time to go!");
+    notifyMe();
   };
+
+  /** notification **/
+  function notifyMe() {
+    navigator.serviceWorker.register("sw.js").then(() => {
+      if (!("Notification" in window)) {
+        // Check if the browser supports notifications
+        alert("This browser does not support desktop notification");
+      } else if (Notification.permission === "granted") {
+        // Check whether notification permissions have already been granted;
+        // if so, create a notification
+        navigator.serviceWorker.ready.then((registration) => {
+          setTimeout(() => {
+            registration.showNotification("It's time to go!", {
+              body: "Zelkova, Let's go!",
+              icon: "/thumbnail-512x512.png",
+              vibrate: 200,
+            });
+          }, 5000);
+        });
+      } else if (Notification.permission !== "denied") {
+        // We need to ask the user for permission
+        Notification.requestPermission().then((permission) => {
+          // If the user accepts, let's create a notification
+          if (permission === "granted") {
+            navigator.serviceWorker.ready.then((registration) => {
+              setTimeout(() => {
+                registration.showNotification("It's time to go!", {
+                  body: "Zelkova, Let's go!",
+                  icon: "/thumbnail-512x512.png",
+                  vibrate: 200,
+                });
+              }, 5000);
+            });
+          }
+        });
+      }
+    });
+  }
 
   return (
     <>
