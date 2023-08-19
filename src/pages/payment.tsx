@@ -16,15 +16,12 @@ export default function Payment() {
     switch (paymentImageState) {
       case "initial":
         setPaymentImageState("face");
-        console.log("face");
         break;
       case "face":
         setPaymentImageState("card");
-        console.log("card");
         break;
       case "card":
         setPaymentImageState("face");
-        console.log("face");
         break;
       default:
         break;

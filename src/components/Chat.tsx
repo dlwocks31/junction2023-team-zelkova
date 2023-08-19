@@ -177,7 +177,6 @@ export function ChatComponent({
             className="input"
             value={currentMessage}
             onChange={(e) => {
-              console.log(typeof e.target.value);
               setCurrentMessage(e.target.value);
             }}
           />
