@@ -1,6 +1,10 @@
 import { useState } from "react";
-
+import { api } from "~/utils/api";
 export default function Test() {
+  const { data: queryData } = api.getRestaurantSuggestion.useQuery({
+    text: "피자 먹고싶어",
+  });
+
   const [data, setData] = useState("");
   const [loading, setLoading] = useState(false);
   const onClick = async (type: string) => {
@@ -38,7 +42,7 @@ export default function Test() {
   };
   return (
     <div>
-      <div>Hello, World!</div>
+      <div>QueryData: {JSON.stringify(queryData)}</div>
       <button
         className="focus:shadow-outline rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-600 focus:outline-none"
         onClick={() => {
