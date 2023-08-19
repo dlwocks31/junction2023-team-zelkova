@@ -14,6 +14,9 @@ import {
 } from "~/utils/math";
 import ProgressBar from "@ramonak/react-progress-bar";
 import { Restaurant } from "~/server/mock-db";
+import { Button, Modal } from "loplat-ui";
+import Image from "next/image";
+import { useRouter } from "next/router";
 
 export default function MapPage() {
   const [map, setMap] = useState<null | naver.maps.Map>(null);
@@ -67,6 +70,10 @@ export default function MapPage() {
     }
   }, [status]);
 
+  /** modal **/
+  const [open, setOpen] = useState(false);
+  const router = useRouter();
+
   return (
     <>
       <NextSeo title="pickup" description="way to pick up the food" />
@@ -86,6 +93,49 @@ export default function MapPage() {
             bgColor="#2E6AC8"
             isLabelVisible={false}
           />
+          <Button
+            onClick={() => {
+              setOpen(true);
+            }}
+          >
+            (test)show modal
+          </Button>
+          <Modal
+            isOpen={open}
+            onClose={() => {
+              setOpen(false);
+            }}
+          >
+            <div
+              className="modalContent"
+              onClick={() => {
+                router.push("/mypage");
+              }}
+            >
+              <h2 className="title">Congrats!</h2>
+              <Image
+                src="/image/congrats.png"
+                alt=""
+                width={220}
+                height={254}
+              />
+              <div className="achievements">
+                <div className="row">
+                  <Image src="/icon/trophy.png" alt="" width={52} height={48} />
+                  <p>The 1st customer who pick up from this store today</p>
+                </div>
+                <div className="row">
+                  <Image
+                    src="/icon/footprint.png"
+                    alt=""
+                    width={42}
+                    height={40}
+                  />
+                  <p>314m with BoB</p>
+                </div>
+              </div>
+            </div>
+          </Modal>
         </div>
         <div style={{ width: "100%", height: "100%" }}>
           <Map onLoad={setMap} />
@@ -146,6 +196,36 @@ export default function MapPage() {
 
         .wrapper {
           border: 3px solid blue;
+        }
+
+        .modalContent {
+          width: 350px;
+          max-width: 100%;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          background: white;
+          padding: 40px 16px 20px;
+
+          .title {
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 16px;
+          }
+
+          .achievements {
+            width: 100%;
+            background: #fff9e0;
+            padding: 20px 4px;
+
+            .row {
+              display: grid;
+              grid-template-columns: 42px 1fr;
+              align-items: center;
+              gap: 16px;
+              color: #000000;
+            }
+          }
         }
       `}</style>
     </>
