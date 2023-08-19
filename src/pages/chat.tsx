@@ -26,6 +26,20 @@ export default function ChatIndex() {
           },
         ]}
         getNextMessage={getNextMessage}
+        actionButtons={[
+          {
+            text: "Pick up complete!",
+            callback: () => {
+              return;
+            },
+          },
+          {
+            text: "I don't want to talk anymore.",
+            callback: () => {
+              return;
+            },
+          },
+        ]}
       />
     </main>
   );

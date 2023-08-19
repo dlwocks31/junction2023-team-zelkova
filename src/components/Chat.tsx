@@ -48,6 +48,7 @@ export function ChatComponent({
   initialMessages,
   getNextMessage,
   showIntroOnSingleMessage,
+  actionButtons,
 }: {
   initialMessages: Message[];
   getNextMessage: (data: {
@@ -55,6 +56,10 @@ export function ChatComponent({
     allMessages: Message[];
   }) => Promise<Message>;
   showIntroOnSingleMessage?: boolean;
+  actionButtons?: {
+    text: string;
+    callback: () => void;
+  }[];
 }) {
   function scrollToBottom() {
     setTimeout(() => {
@@ -142,27 +147,43 @@ export function ChatComponent({
         </div>
       )}
       <form
-        className="sendMessage"
+        className="sendMessage flex flex-col gap-2"
         onSubmit={(e) => {
           e.preventDefault();
           sendMessage();
         }}
       >
-        <input
-          className="input"
-          value={currentMessage}
-          onChange={(e) => {
-            console.log(typeof e.target.value);
-            setCurrentMessage(e.target.value);
-          }}
-        />
-        <IconButton variant="ghost2" borderless>
-          {isLoading ? (
-            <CircleLoading size={30} />
-          ) : (
-            <NearMeIcon fill="#000000" size={20} suffixForId="nearMe" />
-          )}
-        </IconButton>
+        {actionButtons && (
+          <div className="flex gap-1">
+            {actionButtons.map((button) => (
+              <button
+                key={button.text}
+                className="rounded-full bg-blue-500 px-2 py-0.5  text-xs text-white"
+                onClick={button.callback}
+              >
+                {button.text}
+              </button>
+            ))}
+          </div>
+        )}
+
+        <div className="flex">
+          <input
+            className="input"
+            value={currentMessage}
+            onChange={(e) => {
+              console.log(typeof e.target.value);
+              setCurrentMessage(e.target.value);
+            }}
+          />
+          <IconButton variant="ghost2" borderless>
+            {isLoading ? (
+              <CircleLoading size={30} />
+            ) : (
+              <NearMeIcon fill="#000000" size={20} suffixForId="nearMe" />
+            )}
+          </IconButton>
+        </div>
       </form>
       <style jsx>
         {`
