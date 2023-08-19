@@ -17,8 +17,6 @@ export default function Order() {
         break;
       case "payment":
         router.push("/alarm");
-      default:
-        router.push("/map");
         break;
     }
   };
