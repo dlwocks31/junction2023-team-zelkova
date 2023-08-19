@@ -1,6 +1,6 @@
 import { openaiNonStream } from "./openai";
 
-export function PickupWayQuery(
+export function pickupWayQuery(
   interactions: {
     role: "user" | "system";
     content: string;

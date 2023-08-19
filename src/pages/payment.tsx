@@ -3,7 +3,7 @@ import { useState } from "react";
 import useSWR from "swr";
 import { useRouter } from "next/router";
 
-export default function Order() {
+export default function Payment() {
   const [pageState, setPageState] = useState("menu");
   const router = useRouter();
   const [paymentImageState, setPaymentImageState] = useState("initial");
@@ -57,7 +57,7 @@ export default function Order() {
 
   return (
     <>
-      <NextSeo title="음식점 페이지" description="TODO" />
+      <NextSeo title="결제 페이지" description="TODO" />
       <main
         style={{
           position: "relative",
