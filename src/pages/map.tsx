@@ -25,7 +25,7 @@ export default function MapPage() {
     }
   }, [currentLocation]);
 
-  const completed = useMemo(() => {
+  const completed: number = useMemo(() => {
     if (!currentRestaurant || !currentLocation || !paths[0]) return 10;
     const totalDistance = calculateDistanceBetweenCoordinates(paths[0], [
       currentRestaurant.latitude,
@@ -84,17 +84,18 @@ export default function MapPage() {
               ))}
 
           {/** TODO: make restaurant look different */}
-          {map &&
-            restaurant.data?.map((item, i) => (
-              <Marker
-                key={i}
-                map={map}
-                coordinates={[item.latitude, item.longitude]}
-                onClick={() => {
-                  alert(item.name);
-                }}
-              />
-            ))}
+          {map && currentRestaurant && (
+            <Marker
+              map={map}
+              coordinates={[
+                currentRestaurant.latitude,
+                currentRestaurant.longitude,
+              ]}
+              onClick={() => {
+                alert(currentRestaurant.name);
+              }}
+            />
+          )}
         </div>
       </main>
 
