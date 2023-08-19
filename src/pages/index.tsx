@@ -203,7 +203,7 @@ export default function Home() {
           }
           .intro {
             position: relative;
-            padding-top: 120px;
+            padding-top: 200px;
             width: 100%;
 
             .rabbit {
