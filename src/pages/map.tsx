@@ -89,6 +89,10 @@ export default function MapPage() {
   const [modalOpen, setModalOpen] = useState(false);
   const router = useRouter();
 
+  const onPickupFinish = () => {
+    setModalOpen(true);
+  };
+
   return (
     <>
       <NextSeo title="pickup" description="way to pick up the food" />
@@ -198,7 +202,7 @@ export default function MapPage() {
                 <Button
                   size="sm"
                   onClick={() => {
-                    setModalOpen(true);
+                    onPickupFinish();
                   }}
                 >
                   Yes
@@ -257,13 +261,13 @@ export default function MapPage() {
                   {
                     text: "Pick up complete!",
                     callback: () => {
-                      return;
+                      onPickupFinish();
                     },
                   },
                   {
                     text: "I don't want to talk anymore.",
                     callback: () => {
-                      return;
+                      setStatus(2);
                     },
                   },
                 ]}
