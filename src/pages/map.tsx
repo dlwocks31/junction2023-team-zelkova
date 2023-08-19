@@ -30,6 +30,13 @@ export default function MapPage() {
             icon={generateParentMarkerIcon("10")}
           />
         )}
+        {map && currentLocation && (
+          <Marker
+            map={map}
+            coordinates={currentLocation}
+            icon={generateParentMarkerIcon("10")}
+          />
+        )}
 
         {/** TODO: make restaurant look different */}
         {map &&
