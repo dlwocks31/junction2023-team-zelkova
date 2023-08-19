@@ -6,37 +6,52 @@ import { useRouter } from "next/router";
 export default function Order() {
   const [pageState, setPageState] = useState("menu");
   const router = useRouter();
+  const [paymentImageState, setPaymentImageState] = useState("initial");
 
   const handleButtonClick = () => {
-    switch (pageState) {
-      case "menu":
-        setPageState("order");
+    router.push("/alarm");
+  };
+
+  const handlePaymentImageClick = () => {
+    switch (paymentImageState) {
+      case "initial":
+        setPaymentImageState("face");
+        console.log("face");
         break;
-      case "order":
-        router.push("/payment");
+      case "face":
+        setPaymentImageState("card");
+        console.log("card");
         break;
+      case "card":
+        setPaymentImageState("face");
+        console.log("face");
+        break;
+      default:
+        break;
+    }
+  };
+
+  const getHeadImageSrc = () => {
+    switch (paymentImageState) {
+      case "initial":
+        return "/image/paymentHeadView.png";
+      case "face":
+        return "/image/paymentHeadFace.png";
+      case "card":
+        return "/image/paymentHeadCard.png";
+      default:
+        return "/image/paymentHeadView.png";
     }
   };
 
   const getImageSrc = () => {
-    switch (pageState) {
-      case "menu":
-        return "/image/menuView.png";
-      case "order":
-        return "/image/orderView.png";
+    switch (paymentImageState) {
+      case "face":
+        return "/image/paymentFaceView.png";
+      case "card":
+        return "/image/paymentCardView.png";
       default:
-        return "/image/menuView.png";
-    }
-  };
-
-  const getButtonText = () => {
-    switch (pageState) {
-      case "menu":
-        return "Order";
-      case "order":
-        return "Pay 21,800 won";
-      default:
-        return "Order";
+        return "";
     }
   };
 
@@ -51,10 +66,20 @@ export default function Order() {
           overflow: "hidden",
         }}
       >
-        <img src={getImageSrc()} alt="" style={{ width: "100%" }} />
+        <img
+          src={getHeadImageSrc()}
+          alt=""
+          onClick={handlePaymentImageClick}
+          style={{ width: "100%", cursor: "pointer" }}
+        />
+        <img
+          src={getImageSrc()}
+          alt=""
+          style={{ width: "100%", cursor: "pointer" }}
+        />
 
         <button className="button" onClick={handleButtonClick}>
-          {getButtonText()}
+          Pay 21,800 won now
         </button>
       </main>
       <style jsx>
