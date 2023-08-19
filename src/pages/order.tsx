@@ -52,62 +52,12 @@ export default function Order() {
         }}
       >
         <img src={getImageSrc()} alt="" style={{ width: "100%" }} />
-
         <button className="button" onClick={handleButtonClick}>
           {getButtonText()}
         </button>
       </main>
       <style jsx>
         {`
-          .intro {
-            position: relative;
-            padding-top: 120px;
-            width: 100%;
-            text-align: center;
-          }
-          .rabbit {
-            width: 100%;
-          }
-          .title {
-            color: var(--label-color-light-primary, #000);
-            font-family: Noto Sans KR;
-            font-size: 28px;
-            font-style: normal;
-            font-weight: 700;
-            line-height: 22px; /* 78.571% */
-            letter-spacing: -0.408px;
-            margin: 10px;
-          }
-          .subtitle {
-            color: #2e6ac8;
-            font-family: Noto Sans KR;
-            font-size: 17px;
-            font-style: normal;
-            font-weight: 700;
-            line-height: 22px; /* 129.412% */
-            margin-bottom: 40px;
-          }
-          .speech {
-            position: relative;
-            background-color: #dde9fc;
-            border-radius: 20px;
-            padding: 10px 32px;
-            margin: 16px auto;
-            width: fit-content;
-            max-width: 320px;
-            text-align: center;
-            border: none;
-          }
-          .speech::before {
-            content: "";
-            position: absolute;
-            bottom: -20px;
-            left: 50%;
-            transform: translateX(-50%);
-            border-style: solid;
-            border-width: 11px;
-            border-color: #dde9fc transparent transparent transparent;
-          }
           .button {
             position: fixed;
             bottom: 40px;
