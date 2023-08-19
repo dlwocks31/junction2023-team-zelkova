@@ -1,11 +1,16 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import url(//fonts.googleapis.com/earlyaccess/notosanskr.css);
 
 * {
   box-sizing: border-box;
   padding: 0;
   margin: 0;
+}
+
+body {
+  font-family: 'Noto Sans KR', sans-serif;
 }
 
 html,

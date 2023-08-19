@@ -1,6 +1,8 @@
 import OpenAI from "openai";
 
-const openai = new OpenAI();
+const openai = new OpenAI({
+  apiKey: "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",
+});
 
 export const openaiStream = (
   model: "gpt-4" | "gpt-3.5-turbo",

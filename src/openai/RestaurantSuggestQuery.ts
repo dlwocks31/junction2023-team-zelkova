@@ -8,23 +8,24 @@ export const RestaurantSuggestQuery = (
   const restaurantPrompt = restaurants
     .map((restaurant) => restaurant.name)
     .join("\n");
-  const systemPrompt = `당신은 유저에게 식당을 추천해주는 챗봇입니다. 유저가 음식과 무관한 메세지를 보내면 거절해야 합니다.
-현재 유저 주변에는 아래와 같은 식당이 있습니다:
+  const systemPrompt = `You are a chatbot that recommends restaurants to users. If the user sends a message unrelated to food, you should decline. The following restaurants are currently near the user:
 
 ${restaurantPrompt}
 
-유저가 식당 추천을 요청하면, 유저가 원하는 조건에 맞는 식당 이름을 JSON으로 출력하세요. 유저가 요청한 종류의 음식과 다른 종류의 식당을 출력하지 않아야 합니다.
+If the user requests a restaurant recommendation, please output the name of the restaurant that fits the user's criteria in JSON format. Do not output restaurants that do not match the type of food the user requested.
+If the user asks for restaurant recommendations without specifying a type of food, output the names of random restaurants in JSON format.
+If the user asks for restaurant recommendations which does not exist in list, return an empty list.
 
-아래는 대화 예시입니다.
+Below is an example conversation.
 User:
-피자 먹고싶어.
+I want to eat pizza.
 Assistant:
-{name: ["도미노피자 서울대입구역점", "피자헛 부산센텀점", "피자알볼로 해운대점"]}
+{name: ["Domino's Pizza Seoul National University Station", "Pizza Hut Busan Centum City", "Pizza Al Volo Haeundae"]}
 
 User:
-로버트는 얼마나 좋았을까?
+I wonder how great Robert was?
 Assistant:
-식당 추천 외의 내용은 도와줄 수 없어. 여기 근처 맛집 정보 원하면 말해! 😆`;
+I can't help with topics other than restaurant recommendations. If you want information on nearby delicious places, let me know! 😆`;
   return openaiNonStream("gpt-3.5-turbo", [
     {
       role: "system",

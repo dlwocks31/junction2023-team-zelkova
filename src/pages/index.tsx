@@ -1,27 +1,71 @@
-import { NextSeo } from "next-seo";
-import { api } from "~/utils/api";
 import dayjs from "dayjs";
-import { IconButton, NearMeIcon } from "loplat-ui";
+import { CircleLoading, IconButton, NearMeIcon } from "loplat-ui";
+import { NextSeo } from "next-seo";
 import { useState } from "react";
+import { api } from "~/utils/api";
 
+function scrollToBottom() {
+  setTimeout(() => {
+    const element = document.getElementsByClassName("chatting")[0];
+    if (element) {
+      element.scrollTop = element.scrollHeight;
+    }
+  }, 0);
+}
 export default function Home() {
-  const hello = api.findAllRestaurant.useQuery({});
+  const restaurants = api.findAllRestaurant.useQuery({});
   const [messages, setMessages] = useState<
     {
       speaker: "bot" | "human";
       content: string;
-      menus?: [
-        { name: string; distance: string; picked: number; crowded: boolean }
-      ];
+      menus?: {
+        name: string;
+        distance: string;
+        picked: number;
+        crowded: boolean;
+      }[];
     }[]
   >([
     {
       speaker: "bot",
       content: "Do you want something to eat now? Let's go get it together 😋",
-      menus: [{ name: "Pizza", distance: "4m", picked: 84, crowded: false }],
     },
   ]);
 
+  const sendMessageMutation = api.getRestaurantSuggestion.useMutation({
+    onSuccess: (data) => {
+      if (data.showSuggestion) {
+        const { message, suggestion } = data;
+        if (!message || !suggestion)
+          throw new Error("message or suggestions is null");
+
+        setMessages((state) => [
+          ...state,
+          {
+            speaker: "bot",
+            content: message,
+            menus: suggestion.map((item) => ({
+              name: item.name,
+              distance: "10m",
+              picked: 20,
+              crowded: true,
+            })),
+          },
+        ]);
+      } else {
+        const message = data.message;
+        if (!message) throw new Error("message is null");
+        setMessages((state) => [
+          ...state,
+          {
+            speaker: "bot",
+            content: message,
+          },
+        ]);
+      }
+      scrollToBottom();
+    },
+  });
   const [currentMessage, setCurrentMessage] = useState("");
   const sendMessage = () => {
     if (!currentMessage.trim()) return;
@@ -30,13 +74,10 @@ export default function Home() {
       { speaker: "human", content: currentMessage },
     ]);
     setCurrentMessage("");
+    scrollToBottom();
+
+    sendMessageMutation.mutate({ text: currentMessage });
     // scroll down
-    setTimeout(() => {
-      const element = document.getElementsByClassName("chatting")[0];
-      if (element) {
-        element.scrollTop = element.scrollHeight;
-      }
-    }, 0);
   };
 
   return (
@@ -71,7 +112,7 @@ export default function Home() {
                 )}
               </div>
             ))}
-          </div>
+        </div>
         )}
         <form
           className="sendMessage"
@@ -84,11 +125,16 @@ export default function Home() {
             className="input"
             value={currentMessage}
             onChange={(e) => {
+              console.log(typeof e.target.value);
               setCurrentMessage(e.target.value);
             }}
           />
           <IconButton variant="ghost2" borderless>
-            <NearMeIcon fill="#000000" size={20} suffixForId="nearMe" />
+            {sendMessageMutation.isLoading ? (
+              <CircleLoading size={30} />
+            ) : (
+              <NearMeIcon fill="#000000" size={20} suffixForId="nearMe" />
+            )}
           </IconButton>
         </form>
       </main>
