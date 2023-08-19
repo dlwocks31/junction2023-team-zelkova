@@ -1,9 +1,7 @@
 import { NextSeo } from "next-seo";
-import { useState } from "react";
-import useSWR from "swr";
 import { useRouter } from "next/router";
 
-export default function alarmPage() {
+export default function AlarmPage() {
   const router = useRouter();
 
   const navigateToMap = () => {
