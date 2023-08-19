@@ -210,7 +210,7 @@ export function ChatComponent({
               text-align: right;
               color: white;
               &::before {
-                bottom: 4px;
+                bottom: 10px;
                 left: unset;
                 right: -20px;
                 transform: translateX(0);

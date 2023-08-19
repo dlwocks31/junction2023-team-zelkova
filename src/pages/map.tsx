@@ -43,6 +43,14 @@ export default function MapPage() {
     return Math.max(10, newCompleted > 90 ? 100 : newCompleted);
   }, [currentLocation, currentRestaurant]);
 
+  useEffect(() => {
+    // test
+    alert(completed);
+    if (completed > 20) {
+      navigator.vibrate(200);
+    }
+  }, [completed]);
+
   return (
     <>
       <NextSeo title="pickup" description="way to pick up the food" />
