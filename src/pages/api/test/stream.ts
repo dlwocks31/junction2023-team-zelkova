@@ -1,4 +1,3 @@
-import { NextApiRequest, NextApiResponse } from "next";
 import OpenAI from "openai";
 
 const openai = new OpenAI();
@@ -38,10 +37,7 @@ Assistant:
 평점이 높은 피자를 먹고 싶군! 괜찮은 피자집을 가져왔어 🤭
 `;
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
+export default async function handler(req: Request, res: Response) {
   const body = await req.json();
   const { type } = body;
   console.log(type);
