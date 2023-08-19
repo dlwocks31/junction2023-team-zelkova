@@ -31,6 +31,9 @@ export const appRouter = createTRPCRouter({
       const queryResult = await RestaurantSuggestQuery(input.text, restaurants);
       const message = queryResult.choices[0]?.message?.content;
       try {
+        if (!message) {
+          throw new Error("message is undefined");
+        }
         const jsonSuggestion = JSON.parse(message);
         console.log(typeof jsonSuggestion);
         console.log(jsonSuggestion);
