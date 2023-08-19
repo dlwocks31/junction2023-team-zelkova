@@ -20,6 +20,18 @@ export const appRouter = createTRPCRouter({
         description: "Description 1",
         latitude: 35.1659599,
         longitude: 129.1319517,
+        menus: [
+          {
+            id: 1,
+            name: "Menu 1",
+            price: 10000,
+          },
+          {
+            id: 2,
+            name: "Menu 2",
+            price: 20000,
+          },
+        ],
       },
       {
         id: 2,
@@ -27,6 +39,18 @@ export const appRouter = createTRPCRouter({
         description: "Description 2",
         latitude: 35.1670546,
         longitude: 129.1340937,
+        menus: [
+          {
+            id: 3,
+            name: "Menu 3",
+            price: 30000,
+          },
+          {
+            id: 4,
+            name: "Menu 4",
+            price: 40000,
+          },
+        ],
       },
     ];
   }),
