@@ -6,7 +6,7 @@ import { mutate } from "swr";
 import { calculateDistanceBetweenCoordinates } from "~/utils/math";
 
 export const INITIAL_CENTER: Coordinates = [35.1663859, 129.1346072];
-export const INITIAL_ZOOM = 17;
+export const INITIAL_ZOOM = 16;
 
 type Props = {
   initialCenter?: Coordinates;
