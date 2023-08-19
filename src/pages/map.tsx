@@ -1,7 +1,10 @@
 import { NextSeo } from "next-seo";
 import { useEffect, useMemo, useState } from "react";
 import useSWR from "swr";
-import Marker, { generateParentMarkerIcon } from "~/components/map/Marker";
+import Marker, {
+  generateFootprintMarkerIcon,
+  generateRestaurantMarkerIcon,
+} from "~/components/map/Marker";
 import { Coordinates } from "~/types/map";
 import { api } from "~/utils/api";
 import Map from "../components/map/Map";
@@ -70,7 +73,7 @@ export default function MapPage() {
                   key={index}
                   map={map}
                   coordinates={coor}
-                  icon={generateParentMarkerIcon(
+                  icon={generateFootprintMarkerIcon(
                     index === 0
                       ? 0
                       : calculateAngle(
@@ -84,7 +87,14 @@ export default function MapPage() {
                 />
               ))}
 
-          {/** TODO: make restaurant look different */}
+          {map && currentLocation && (
+            <Marker
+              map={map}
+              coordinates={currentLocation}
+              icon={generateFootprintMarkerIcon(0)}
+            />
+          )}
+
           {map && currentRestaurant && (
             <Marker
               map={map}
@@ -92,9 +102,7 @@ export default function MapPage() {
                 currentRestaurant.latitude,
                 currentRestaurant.longitude,
               ]}
-              onClick={() => {
-                alert(currentRestaurant.name);
-              }}
+              icon={generateRestaurantMarkerIcon()}
             />
           )}
         </div>
