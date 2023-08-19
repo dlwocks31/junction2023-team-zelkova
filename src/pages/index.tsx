@@ -1,6 +1,7 @@
 import dayjs from "dayjs";
 import { CircleLoading, IconButton, NearMeIcon } from "loplat-ui";
 import { NextSeo } from "next-seo";
+import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { api } from "~/utils/api";
 import { Restaurant } from "../server/mock-db";
@@ -112,6 +113,7 @@ export default function Home() {
     sendMessageMutation.mutate({ text: currentMessage });
     // scroll down
   };
+  const router = useRouter();
 
   return (
     <>
@@ -140,10 +142,22 @@ export default function Home() {
                   <div className="menus">
                     {message.restaurants.map((restaurant, i) => (
                       <React.Fragment key={i}>
-                        <RestaurantSelectComponent
-                          restaurant={restaurant}
-                          index={i + 1}
-                        />
+                        <div
+                          className="focus:outline-none focus:ring"
+                          onClick={() => {
+                            router.push(
+                              `/order?restaurant=${encodeURIComponent(
+                                restaurant.name
+                              )}`
+                            );
+                          }}
+                        >
+                          <RestaurantSelectComponent
+                            restaurant={restaurant}
+                            index={i + 1}
+                          />
+                        </div>
+
                         {i !== message.restaurants!.length - 1 && (
                           <hr className="my-2 border-gray-400" />
                         )}
