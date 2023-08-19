@@ -1,13 +1,18 @@
 import { useState } from "react";
-
+import { api } from "~/utils/api";
 export default function Test() {
+  const { data: queryData } = api.getRestaurantSuggestion.useQuery(
+    { text: "햄버거 먹고싶어" },
+    { refetchOnWindowFocus: false }
+  );
+
   const [data, setData] = useState("");
   const [loading, setLoading] = useState(false);
   const onClick = async (type: string) => {
     setData("");
     try {
       setLoading(true);
-      const response = await fetch(`http://localhost:3000/api/test/stream`, {
+      const response = await fetch(`/api/test/stream`, {
         method: "POST",
         headers: new Headers({
           "Content-Type": "application/json",
@@ -38,7 +43,7 @@ export default function Test() {
   };
   return (
     <div>
-      <div>Hello, World!</div>
+      <div>QueryData: {JSON.stringify(queryData)}</div>
       <button
         className="focus:shadow-outline rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-600 focus:outline-none"
         onClick={() => {

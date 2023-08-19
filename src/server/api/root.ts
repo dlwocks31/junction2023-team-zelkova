@@ -1,59 +1,69 @@
 import { z } from "zod";
 import { exampleRouter } from "~/server/api/routers/example";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
+import { dialogueQuery } from "../../openai/DialogueQuery";
+import { RestaurantSuggestQuery } from "../../openai/RestaurantSuggestQuery";
+import { restaurantData } from "../mock-db";
 
 /**
  * This is the primary router for your server.
  *
  * All routers added in /api/routers should be manually added here.
  */
+
 export const appRouter = createTRPCRouter({
   example: exampleRouter,
   findAllRestaurant: publicProcedure.input(z.object({})).query(({ ctx }) => {
     /*
     35.1659599,129.1319517/35.1670546,129.1340937
     */
-    return [
-      {
-        id: 1,
-        name: "Restaurant 1",
-        description: "Description 1",
-        latitude: 35.1659599,
-        longitude: 129.1319517,
-        menus: [
-          {
-            id: 1,
-            name: "Menu 1",
-            price: 10000,
-          },
-          {
-            id: 2,
-            name: "Menu 2",
-            price: 20000,
-          },
-        ],
-      },
-      {
-        id: 2,
-        name: "Restaurant 2",
-        description: "Description 2",
-        latitude: 35.1670546,
-        longitude: 129.1340937,
-        menus: [
-          {
-            id: 3,
-            name: "Menu 3",
-            price: 30000,
-          },
-          {
-            id: 4,
-            name: "Menu 4",
-            price: 40000,
-          },
-        ],
-      },
-    ];
+    return restaurantData.map((restaurant) => ({
+      ...restaurant,
+      latitude: 35.1659599,
+      longitude: 129.1319517,
+    }));
   }),
+
+  getRestaurantSuggestion: publicProcedure
+    .input(z.object({ text: z.string() }))
+    .query(async ({ input }) => {
+      const restaurants = restaurantData;
+      const queryResult = await RestaurantSuggestQuery(input.text, restaurants);
+      const message = queryResult.choices[0]?.message?.content;
+      try {
+        if (!message) {
+          throw new Error("message is undefined");
+        }
+        const jsonSuggestion = JSON.parse(message);
+        console.log(typeof jsonSuggestion);
+        console.log(jsonSuggestion);
+        const parsedSuggestion = z
+          .object({
+            name: z.array(z.string()),
+          })
+          .parse(jsonSuggestion);
+        if (!parsedSuggestion.name) {
+          return {
+            showSuggestion: false,
+            message:
+              "Unfortunatly, I cannot find any relevant restaurant nearby 😭",
+          };
+        }
+        return {
+          showSuggestion: true,
+          suggestion: parsedSuggestion.name.map((name) => ({
+            name,
+          })),
+          message: await dialogueQuery(input.text),
+        };
+      } catch (e) {
+        console.log(e);
+        return {
+          showSuggestion: false,
+          message: message,
+        };
+      }
+    }),
 });
 
 // export type definition of API
