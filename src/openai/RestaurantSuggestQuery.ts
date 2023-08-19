@@ -29,13 +29,13 @@ User:
 I want to eat pizza.
 Assistant:
 You want a highly-rated pizza! I've got some good pizza places for you 🤭
-{name: ["Pizza Alvolo", "Pizza Hut", "Paik’s Pakboy Pizza"]}
+{"name": ["Pizza Alvolo", "Pizza Hut", "Paik’s Pakboy Pizza"]}
 
 User:
 I want to order Pizza Alvolo.
 Assistant:
 Sure! You can click on Domino's Pizza to place your order 🍕
-{name: ["Pizza Alvolo"]}
+{"name": ["Pizza Alvolo"]}
 
 User:
 I want to eat mexico food.
