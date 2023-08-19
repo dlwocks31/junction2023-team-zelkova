@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { initializeApp } from "firebase/app";
 import { getMessaging, getToken } from "firebase/messaging";
+import { Button } from "loplat-ui";
 
 export default function GetToken() {
   const [token, setToken] = useState("");
@@ -72,7 +73,7 @@ export default function GetToken() {
   return (
     <div>
       token: {token}
-      <button onClick={notifyMe}>notify!!</button>
+      <Button onClick={notifyMe}>notify!!</Button>
     </div>
   );
 }
