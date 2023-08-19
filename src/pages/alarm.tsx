@@ -20,7 +20,7 @@ export default function AlarmPage() {
         }}
       >
         <div className="intro">
-          <div className-="rabbit">
+          <div className="rabbit">
             <div className="title">Pizza Albolo</div>
             <div className="subtitle">Order Placed</div>
             <div className="speech">
