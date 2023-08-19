@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { mutate } from "swr";
 import { type Restaurant } from "~/server/mock-db";
+import { Fade } from "react-awesome-reveal";
 
 export interface Message {
   speaker: "bot" | "human";
@@ -99,7 +100,9 @@ export function ChatComponent({
       {showIntro ? (
         <div className="intro">
           <div className="rabbit">
-            <div className="speech">{messages[0]?.content}</div>
+            <Fade direction="up">
+              <div className="speech">{messages[0]?.content}</div>
+            </Fade>
             <img
               src="/gif/walking.gif"
               alt=""
@@ -111,38 +114,40 @@ export function ChatComponent({
         <div className="chatting">
           <p className="time">{dayjs().format("YYYY.MM.DD HH:mm a")}</p>
           {messages.map((message, index) => (
-            <div className={`speech ${message.speaker}`} key={index}>
-              {message.speaker === "bot" && (
-                <div className="absolute -top-12 left-60 h-20 w-20">
-                  <img alt="rabbit" src="/image/rabbitEar.png" />
-                </div>
-              )}
+            <Fade direction="up" key={index}>
+              <div className={`speech ${message.speaker}`}>
+                {message.speaker === "bot" && (
+                  <div className="absolute -top-12 left-60 h-20 w-20">
+                    <img alt="rabbit" src="/image/rabbitEar.png" />
+                  </div>
+                )}
 
-              {message.content}
-              {message.restaurants && (
-                <div className="menus">
-                  {message.restaurants.map((restaurant, i) => (
-                    <React.Fragment key={i}>
-                      <div
-                        onClick={() => {
-                          router.push(`/order`);
-                          mutate("currentRestaurant", restaurant);
-                        }}
-                      >
-                        <RestaurantSelectComponent
-                          restaurant={restaurant}
-                          index={i + 1}
-                        />
-                      </div>
+                {message.content}
+                {message.restaurants && (
+                  <div className="menus">
+                    {message.restaurants.map((restaurant, i) => (
+                      <React.Fragment key={i}>
+                        <div
+                          onClick={() => {
+                            router.push(`/order`);
+                            mutate("currentRestaurant", restaurant);
+                          }}
+                        >
+                          <RestaurantSelectComponent
+                            restaurant={restaurant}
+                            index={i + 1}
+                          />
+                        </div>
 
-                      {i !== message.restaurants!.length - 1 && (
-                        <hr className="my-2 border-gray-400" />
-                      )}
-                    </React.Fragment>
-                  ))}
-                </div>
-              )}
-            </div>
+                        {i !== message.restaurants!.length - 1 && (
+                          <hr className="my-2 border-gray-400" />
+                        )}
+                      </React.Fragment>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </Fade>
           ))}
         </div>
       )}

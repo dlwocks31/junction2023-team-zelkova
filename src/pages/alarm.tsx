@@ -1,6 +1,7 @@
 import { NextSeo } from "next-seo";
 import { useRouter } from "next/router";
 import { toast } from "loplat-ui";
+import { Fade } from "react-awesome-reveal";
 
 export default function AlarmPage() {
   const router = useRouter();
@@ -64,14 +65,16 @@ export default function AlarmPage() {
           <div className="rabbit">
             <div className="title">Pizza Albolo</div>
             <div className="subtitle">Order Placed</div>
-            <div className="speech">
-              Okay, I'm ready.
-              <br />
-              30m for the pizza to be ready, <br />
-              and 14, to get to the store.
-              <br />
-              Why don't we leave in 16 minutes?
-            </div>
+            <Fade direction="up">
+              <div className="speech">
+                Okay, I'm ready.
+                <br />
+                30m for the pizza to be ready, <br />
+                and 14, to get to the store.
+                <br />
+                Why don't we leave in 16 minutes?
+              </div>
+            </Fade>
             <img
               src="/gif/preparing.gif"
               alt=""
