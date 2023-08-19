@@ -91,23 +91,28 @@ export default function MapPage() {
             animateOnRender
             completed={completed}
             bgColor="#2E6AC8"
+            baseBgColor="#F1F1F1"
             isLabelVisible={false}
           />
-          <button
-            onClick={() => {
-              setModalOpen(true);
-            }}
-          >
-            (test)show modal
-          </button>
-          <button
-            onClick={() => {
-              setStatus(status + 1);
-              setFloatOpen(true);
-            }}
-          >
-            (test)increase status
-          </button>
+          <div className="relative mt-1 flex justify-between">
+            <span className="text-xs font-bold" style={{ color: "#2E6AC8" }}>
+              Order Placed
+            </span>
+            <span className="text-xs" style={{ color: "#000000" }}>
+              5:26 PM.
+            </span>
+            <div
+              className="absolute right-4 flex flex-col items-center text-xs"
+              style={{ color: "#000000", top: -58 }}
+            >
+              <span className="font-bold">My ETA</span>
+              <span>5:23 PM.</span>
+              <div
+                className="mt-1 h-4 w-4 rounded-full"
+                style={{ background: "#D9D9D9" }}
+              />
+            </div>
+          </div>
           <Modal
             isOpen={modalOpen}
             onClose={() => {
@@ -282,7 +287,7 @@ export default function MapPage() {
           height: 120px;
           background: white;
         }
-        h2.status {
+        .statusWords {
           font-size: 20px;
           font-weight: bold;
           margin-bottom: 12px;
