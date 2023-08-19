@@ -67,7 +67,7 @@ const Map = ({
         coords.longitude,
       ] as Coordinates;
 
-      if (calculateDistanceBetweenCoordinates(beforeRecord, newCoords) > 0.05) {
+      if (calculateDistanceBetweenCoordinates(beforeRecord, newCoords) > 0.03) {
         mutate("currentLocation", newCoords);
         beforeRecord = newCoords;
       }

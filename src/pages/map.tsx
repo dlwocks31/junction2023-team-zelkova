@@ -37,12 +37,12 @@ export default function MapPage() {
     );
     const newCompleted =
       (1 - Math.min(remainDistance / totalDistance, 1)) * 100;
-    return Math.max(completed, newCompleted > 90 ? 100 : newCompleted);
+    return Math.max(10, newCompleted > 90 ? 100 : newCompleted);
   }, [currentLocation, currentRestaurant]);
 
   return (
     <>
-      <NextSeo title="지도" description="TODO" />
+      <NextSeo title="pickup" description="way to pick up the food" />
       <main
         style={{
           position: "relative",

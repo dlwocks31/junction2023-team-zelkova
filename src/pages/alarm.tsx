@@ -10,7 +10,7 @@ export default function AlarmPage() {
 
   return (
     <>
-      <NextSeo title="주문 완료" description="TODO" />
+      <NextSeo title="alarm" description="ready to order" />
       <main
         style={{
           position: "relative",

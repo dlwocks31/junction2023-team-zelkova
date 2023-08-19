@@ -118,7 +118,7 @@ export default function Home() {
 
   return (
     <>
-      <NextSeo title="채팅" description="Bob과 대화를 나누어보아요." />
+      <NextSeo title="chatting" description="Bob과 대화를 나누어보아요." />
       {/*<pre>{JSON.stringify(hello.data)}</pre>*/}
       <main style={{ width: "100%", height: "100%" }}>
         {messages.length == 1 && (
