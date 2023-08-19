@@ -1,28 +1,43 @@
+import ProgressBar from "@ramonak/react-progress-bar";
+import { Button, DoubleChevronUpIcon, IconButton, Modal } from "loplat-ui";
 import { NextSeo } from "next-seo";
+import Image from "next/image";
+import { useRouter } from "next/router";
 import { useEffect, useMemo, useState } from "react";
 import useSWR from "swr";
 import Marker, {
   generateFootprintMarkerIcon,
   generateRestaurantMarkerIcon,
 } from "~/components/map/Marker";
+import { Restaurant } from "~/server/mock-db";
 import { Coordinates } from "~/types/map";
 import { api } from "~/utils/api";
-import Map from "../components/map/Map";
 import {
   calculateAngle,
   calculateDistanceBetweenCoordinates,
 } from "~/utils/math";
-import ProgressBar from "@ramonak/react-progress-bar";
-import { Restaurant } from "~/server/mock-db";
-import { Button, DoubleChevronUpIcon, IconButton, Modal } from "loplat-ui";
-import Image from "next/image";
-import { useRouter } from "next/router";
+import { ChatComponent, Message } from "../components/Chat";
+import Map from "../components/map/Map";
 
 export default function MapPage() {
   const [map, setMap] = useState<null | naver.maps.Map>(null);
   const { data: currentLocation } = useSWR<Coordinates>("currentLocation");
   const { data: currentRestaurant } = useSWR<Restaurant>("currentRestaurant");
   const [paths, setPaths] = useState<Coordinates[]>([]);
+
+  const sendMessageMutation = api.getPickupWayMessage.useMutation();
+
+  const getNextMessage = async ({
+    allMessages,
+  }: {
+    allMessages: Message[];
+  }) => {
+    const { message } = await sendMessageMutation.mutateAsync(allMessages);
+    return {
+      speaker: "bot" as const,
+      content: message,
+    };
+  };
 
   useEffect(() => {
     if (currentLocation) {
@@ -174,7 +189,7 @@ export default function MapPage() {
               <div className={`speech bot`}>
                 Wow, great job 😚 Did you finish the pickup?
               </div>
-              <div className="mb-4 mt-4 flex w-full justify-end gap-4">
+              <div className="mb-4 mr-8 mt-4 flex w-full justify-end gap-4">
                 <Button
                   size="sm"
                   onClick={() => {
@@ -199,7 +214,7 @@ export default function MapPage() {
               <div className={`speech bot`}>
                 I see! Then, why don't you talk to me some more?
               </div>
-              <div className="mb-4 mt-4 flex w-full justify-end gap-4">
+              <div className="mb-4 mr-8 mt-4 flex w-full justify-end gap-4">
                 <Button
                   size="sm"
                   onClick={() => {
@@ -224,7 +239,30 @@ export default function MapPage() {
           )}
           {status === 4 && (
             <div style={{ width: "100%", height: "calc(100vh - 140px)" }}>
-              chatting...
+              <ChatComponent
+                initialMessages={[
+                  {
+                    speaker: "bot",
+                    content:
+                      "How was the pick up? This is your second pick up with me already🤭",
+                  },
+                ]}
+                getNextMessage={getNextMessage}
+                actionButtons={[
+                  {
+                    text: "Pick up complete!",
+                    callback: () => {
+                      return;
+                    },
+                  },
+                  {
+                    text: "I don't want to talk anymore.",
+                    callback: () => {
+                      return;
+                    },
+                  },
+                ]}
+              />
             </div>
           )}
         </div>
@@ -327,7 +365,6 @@ export default function MapPage() {
           top: 120px; // TODO: change value
           left: 0;
           width: 100%;
-          padding: 0 20px 4px;
           background: white;
           z-index: 1;
           transition: transform 0.5s;

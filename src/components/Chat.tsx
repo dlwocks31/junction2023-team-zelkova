@@ -158,7 +158,7 @@ export function ChatComponent({
             {actionButtons.map((button) => (
               <button
                 key={button.text}
-                className="rounded-full bg-blue-500 px-2 py-0.5  text-xs text-white"
+                className="rounded-full bg-[#2E6AC8] px-2 py-0.5 text-xs text-white"
                 onClick={button.callback}
               >
                 {button.text}
@@ -188,7 +188,7 @@ export function ChatComponent({
       <style jsx>
         {`
           .time {
-            padding: 24px 0;
+            padding-top: 16px;
             text-align: center;
             font-size: 14px;
             color: #3c3c43;
