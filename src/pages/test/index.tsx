@@ -3,11 +3,17 @@ import { useState } from "react";
 export default function Test() {
   const [data, setData] = useState("");
   const [loading, setLoading] = useState(false);
-  const onClick = async () => {
-    console.log("test");
+  const onClick = async (type: string, userQuery: string) => {
+    setData("");
     try {
       setLoading(true);
-      const response = await fetch("http://localhost:3000/api/test/stream");
+      const response = await fetch(`http://localhost:3000/api/test/stream`, {
+        method: "POST",
+        headers: new Headers({
+          "Content-Type": "application/json",
+        }),
+        body: JSON.stringify({ userQuery, type }),
+      });
       if (!response.ok || !response.body) {
         throw response.statusText;
       }
@@ -36,10 +42,19 @@ export default function Test() {
       <button
         className="focus:shadow-outline rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-600 focus:outline-none"
         onClick={() => {
-          onClick().catch(console.error);
+          onClick("id-suggest").catch(console.error);
         }}
       >
-        Click me
+        ID Suggest Prompt
+      </button>
+
+      <button
+        className="focus:shadow-outline rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-600 focus:outline-none"
+        onClick={() => {
+          onClick("dialogue").catch(console.error);
+        }}
+      >
+        Dialogue Prompt
       </button>
       <div>Streamed At:</div>
       <div>{data}</div>
