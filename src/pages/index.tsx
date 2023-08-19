@@ -76,7 +76,7 @@ export default function Home() {
           }
           .intro {
             position: relative;
-            margin-top: 120px;
+            padding-top: 120px;
             width: 100%;
 
             .rabbit {
