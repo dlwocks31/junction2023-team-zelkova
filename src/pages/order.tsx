@@ -60,7 +60,6 @@ export default function Order() {
       return {
         width: "100%",
         marginTop: "10px",
-        cursor: "pointer",
       };
     } else {
       return { width: "100%" };
