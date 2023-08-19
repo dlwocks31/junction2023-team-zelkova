@@ -4,10 +4,10 @@ const config: DefaultSeoProps = {
   titleTemplate: "%s | Junction Asia 2022",
   openGraph: {
     type: "website",
-    site_name: "co-building",
+    site_name: "pick-up-bob",
     images: [
       {
-        url: "https://cobuilding.vercel.app/co-building-512x512.png",
+        url: "https://team-zelkova.vercel.app/thumbnail-512x512.png",
       },
     ],
   },
@@ -34,7 +34,7 @@ const config: DefaultSeoProps = {
     {
       rel: "apple-touch-icon",
       sizes: "180x180",
-      href: "/co-building-180x180.png",
+      href: "/thumbnail-180x180.png",
     },
   ],
   additionalMetaTags: [
@@ -44,12 +44,12 @@ const config: DefaultSeoProps = {
     },
     {
       name: "application-name",
-      content: "co-building",
+      content: "pick-up-bob",
     },
     // iOS
     {
       name: "apple-mobile-web-app-title",
-      content: "co-building",
+      content: "pick-up-bob",
     },
     {
       name: "apple-mobile-web-app-capable",
