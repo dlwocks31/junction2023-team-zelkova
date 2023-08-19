@@ -107,6 +107,12 @@ export function ChatComponent({
           <p className="time">{dayjs().format("YYYY.MM.DD HH:mm a")}</p>
           {messages.map((message, index) => (
             <div className={`speech ${message.speaker}`} key={index}>
+              {message.speaker === "bot" && (
+                <div className="absolute -top-12 left-60 h-20 w-20">
+                  <img alt="rabbit" src="/image/rabbitEar.png" />
+                </div>
+              )}
+
               {message.content}
               {message.restaurants && (
                 <div className="menus">
@@ -202,6 +208,7 @@ export function ChatComponent({
             &.bot {
               left: 16px;
               margin: 0;
+              margin-top: 42px;
               text-align: left;
               &::before {
                 bottom: 10px;
