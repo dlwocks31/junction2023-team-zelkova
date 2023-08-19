@@ -5,7 +5,7 @@ export default function AlarmPage() {
   const router = useRouter();
 
   const navigateToMap = () => {
-    router.push("/map"); // <- 원하는 경로로 이동. 예시로 '/map' 페이지로 이동.
+    router.push("/map");
   };
 
   return (

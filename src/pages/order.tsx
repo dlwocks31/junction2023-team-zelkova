@@ -15,6 +15,8 @@ export default function Order() {
       case "order":
         setPageState("payment");
         break;
+      case "payment":
+        router.push("/alarm");
       default:
         router.push("/map");
         break;
@@ -41,7 +43,7 @@ export default function Order() {
       case "order":
         return "Pay 21,800 won";
       case "payment":
-        return "Pay now";
+        return "Pay 21,800 won now";
       default:
         return "Order";
     }
