@@ -17,11 +17,7 @@ export const appRouter = createTRPCRouter({
     /*
     35.1659599,129.1319517/35.1670546,129.1340937
     */
-    return restaurantData.map((restaurant) => ({
-      ...restaurant,
-      latitude: 35.1659599,
-      longitude: 129.1319517,
-    }));
+    return restaurantData;
   }),
 
   getRestaurantSuggestion: publicProcedure

@@ -26,11 +26,15 @@ function RestaurantSelectComponent({
       <div>{index}.</div>
       <div className="flex flex-col gap-1">
         <div className="flex gap-1">
-          <div className="text">{restaurant.name} | 10m</div>
+          <div className="text">
+            {restaurant.name} | {restaurant.distance}m
+          </div>
         </div>
         <div className="flex gap-1">
-          <BlueCircleComponent text="97 picked" />
-          <BlueCircleComponent text="Least crowded now!" />
+          <BlueCircleComponent text={`${restaurant.picked} picked`} />
+          {restaurant.crowdDegree < 3 && (
+            <BlueCircleComponent text="Least crowded now!" />
+          )}
         </div>
       </div>
     </div>
@@ -51,12 +55,7 @@ export default function Home() {
     {
       speaker: "bot" | "human";
       content: string;
-      menus?: {
-        name: string;
-        distance: string;
-        picked: number;
-        crowded: boolean;
-      }[];
+      restaurants?: Restaurant[];
     }[]
   >([
     {
@@ -72,19 +71,20 @@ export default function Home() {
         if (!message || !suggestion)
           throw new Error("message or suggestions is null");
 
-        setMessages((state) => [
-          ...state,
-          {
-            speaker: "bot",
-            content: message,
-            menus: suggestion.map((item) => ({
-              name: item.name,
-              distance: "10m",
-              picked: 20,
-              crowded: true,
-            })),
-          },
-        ]);
+        setMessages((state) => {
+          const r = suggestion
+            .map((s) => restaurants.data?.find((r) => r.name === s.name))
+            .filter((r) => r) as Restaurant[];
+
+          return [
+            ...state,
+            {
+              speaker: "bot",
+              content: message,
+              restaurants: r,
+            },
+          ];
+        });
       } else {
         const message = data.message;
         if (!message) throw new Error("message is null");
@@ -136,15 +136,15 @@ export default function Home() {
             {messages.map((message, index) => (
               <div className={`speech ${message.speaker}`} key={index}>
                 {message.content}
-                {message.menus && (
+                {message.restaurants && (
                   <div className="menus">
-                    {message.menus.map((menu, i) => (
+                    {message.restaurants.map((restaurant, i) => (
                       <React.Fragment key={i}>
                         <RestaurantSelectComponent
-                          restaurant={menu}
+                          restaurant={restaurant}
                           index={i + 1}
                         />
-                        {i !== message.menus!.length - 1 && (
+                        {i !== message.restaurants!.length - 1 && (
                           <hr className="my-2 border-gray-400" />
                         )}
                       </React.Fragment>
