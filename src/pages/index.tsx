@@ -34,7 +34,7 @@ export default function ChatIndex() {
   };
 
   return (
-    <main className="h-screen w-screen">
+    <main className="flex w-full flex-col" style={{ height: "100dvh" }}>
       <ChatComponent
         initialMessages={[
           {
