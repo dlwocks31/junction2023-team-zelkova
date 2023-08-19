@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 
 export default function Order() {
   const [pageState, setPageState] = useState("menu");
+  const router = useRouter();
 
   const handleButtonClick = () => {
     switch (pageState) {
@@ -15,6 +16,7 @@ export default function Order() {
         setPageState("payment");
         break;
       default:
+        router.push("/map");
         break;
     }
   };

@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import React, { useState } from "react";
 import { api } from "~/utils/api";
 import { Restaurant } from "../server/mock-db";
+import { mutate } from "swr";
 
 function scrollToBottom() {
   setTimeout(() => {
@@ -150,6 +151,7 @@ export default function Home() {
                                 restaurant.name
                               )}`
                             );
+                            mutate("currentRestaurant", restaurant);
                           }}
                         >
                           <RestaurantSelectComponent

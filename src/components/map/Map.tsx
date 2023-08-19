@@ -1,13 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import Script from "next/script";
 import { NaverMap, Coordinates } from "~/types/map";
-import {
-  ArrowLeftIcon,
-  IconButton,
-  NotificationNewIcon,
-  toast,
-} from "loplat-ui";
-import Link from "next/link";
+import { toast } from "loplat-ui";
 import { mutate } from "swr";
 import { calculateDistanceBetweenCoordinates } from "~/utils/math";
 
@@ -74,16 +68,13 @@ const Map = ({
       ] as Coordinates;
 
       if (calculateDistanceBetweenCoordinates(beforeRecord, newCoords) > 0.05) {
-        toast.info(
-          calculateDistanceBetweenCoordinates(beforeRecord, newCoords) + ""
-        );
-        mutate("current", newCoords);
+        mutate("currentLocation", newCoords);
         beforeRecord = newCoords;
       }
     }
 
     function error() {
-      toast.danger("현재 위치를 파악할 수 없습니다.");
+      toast.danger("network error");
     }
 
     const watchId = navigator.geolocation.watchPosition(
@@ -138,27 +129,7 @@ const Map = ({
         onReady={initializeMap}
       />
       <div id={mapId} className="naverMap" />
-      <Link href="/">
-        <IconButton
-          style={{
-            position: "absolute",
-            top: 16,
-            left: 16,
-          }}
-        >
-          <ArrowLeftIcon size={20} suffixForId="back" />
-        </IconButton>
-      </Link>
-      <IconButton
-        style={{
-          position: "absolute",
-          top: 16,
-          left: 80,
-        }}
-        onClick={notifyMe}
-      >
-        <NotificationNewIcon size={20} suffixForId="noti" />
-      </IconButton>
+
       <style jsx>
         {`
           .naverMap {
