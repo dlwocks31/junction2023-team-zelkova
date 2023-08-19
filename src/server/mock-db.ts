@@ -14,7 +14,7 @@ export const restaurantData: Restaurant[] = [
     picked: 12,
     crowdDegree: 3,
     latitude: 35.1659599,
-    longitude: 129.1339517,
+    longitude: 129.1349517,
     // longitude: 129.1319517,
   },
   {
