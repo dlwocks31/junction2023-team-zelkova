@@ -17,6 +17,7 @@
     "@trpc/next": "^10.34.0",
     "@trpc/react-query": "^10.34.0",
     "@trpc/server": "^10.34.0",
+    "dayjs": "^1.11.9",
     "firebase": "^9.15.0",
     "loplat-ui": "^1.11.0-beta.1",
     "next": "^13.4.2",
