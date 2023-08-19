@@ -2,9 +2,9 @@ import dayjs from "dayjs";
 import { CircleLoading, IconButton, NearMeIcon } from "loplat-ui";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
-import { Fade } from "react-awesome-reveal";
 import { mutate } from "swr";
 import { type Restaurant } from "~/server/mock-db";
+import { Fade } from "react-awesome-reveal";
 
 export interface Message {
   speaker: "bot" | "human";
@@ -96,9 +96,9 @@ export function ChatComponent({
   const router = useRouter();
   const showIntro = messages.length === 1 && showIntroOnSingleMessage;
   return (
-    <div className="flex flex-grow flex-col">
+    <>
       {showIntro ? (
-        <div className="intro flex flex-grow items-center">
+        <div className="intro">
           <div className="rabbit">
             <Fade direction="up">
               <div className="speech">{messages[0]?.content}</div>
@@ -111,7 +111,7 @@ export function ChatComponent({
           </div>
         </div>
       ) : (
-        <div className="chatting flex-grow">
+        <div className="chatting">
           <p className="time">{dayjs().format("YYYY.MM.DD HH:mm a")}</p>
           {messages.map((message, index) => (
             <Fade direction="up" key={index}>
@@ -152,7 +152,7 @@ export function ChatComponent({
         </div>
       )}
       <form
-        className="sendMessage flex flex-col gap-2 self-end"
+        className="sendMessage flex flex-col gap-2"
         onSubmit={(e) => {
           e.preventDefault();
           sendMessage();
@@ -172,9 +172,9 @@ export function ChatComponent({
           </div>
         )}
 
-        <div className="flex w-full">
+        <div className="flex">
           <input
-            className="input flex-grow"
+            className="input"
             value={currentMessage}
             onChange={(e) => {
               setCurrentMessage(e.target.value);
@@ -199,6 +199,7 @@ export function ChatComponent({
           }
           .intro {
             position: relative;
+            padding-top: 200px;
             width: 100%;
 
             .rabbit {
@@ -271,6 +272,9 @@ export function ChatComponent({
             border-color: #dde9fc transparent transparent transparent;
           }
           .sendMessage {
+            position: fixed;
+            bottom: 0;
+            left: 0;
             width: 100%;
             padding: 12px 6px 12px 12px;
             display: flex;
@@ -284,6 +288,6 @@ export function ChatComponent({
           }
         `}
       </style>
-    </div>
+    </>
   );
 }
