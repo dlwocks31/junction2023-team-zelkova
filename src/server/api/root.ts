@@ -9,16 +9,21 @@ function extractJSONFromString(str: string) {
   try {
     const startIndex = str.indexOf("{");
     const endIndex = str.lastIndexOf("}");
+    console.log(startIndex, endIndex);
 
     if (startIndex !== -1 && endIndex !== -1 && startIndex < endIndex) {
       const jsonString = str.substring(startIndex, endIndex + 1);
+      console.log("found jsonlike: ", jsonString);
       const extractedJSON = JSON.parse(jsonString);
       const strippedString = str.replace(jsonString, "");
+      console.log("extractedJSON: ", extractedJSON);
       return { isValidJSON: true, extractedJSON, strippedString };
     }
 
+    console.log("is not valid json - json not detected");
     return { isValidJSON: false };
   } catch (error) {
+    console.log("is not valid json - parse failed");
     return { isValidJSON: false };
   }
 }
