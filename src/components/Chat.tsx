@@ -47,9 +47,14 @@ function BlueCircleComponent({ text }: { text: string }) {
 export function ChatComponent({
   initialMessages,
   getNextMessage,
+  showIntroOnSingleMessage,
 }: {
   initialMessages: Message[];
-  getNextMessage: (message: string) => Promise<Message>;
+  getNextMessage: (data: {
+    message: string;
+    allMessages: Message[];
+  }) => Promise<Message>;
+  showIntroOnSingleMessage?: boolean;
 }) {
   function scrollToBottom() {
     setTimeout(() => {
@@ -65,21 +70,25 @@ export function ChatComponent({
   const [isLoading, setIsLoading] = useState(false);
   const sendMessage = () => {
     if (!currentMessage.trim()) return;
-    setMessages((state) => [
-      ...state,
-      { speaker: "human", content: currentMessage },
-    ]);
+    const newMessages = [
+      ...messages,
+      { speaker: "human" as const, content: currentMessage },
+    ];
+    setMessages(newMessages);
     setCurrentMessage("");
     scrollToBottom();
     setIsLoading(true);
-    getNextMessage(currentMessage).then((message) => {
+    getNextMessage({
+      message: currentMessage,
+      allMessages: newMessages,
+    }).then((message) => {
       setMessages((state) => [...state, message]);
       scrollToBottom();
       setIsLoading(false);
     });
   };
   const router = useRouter();
-  const showIntro = messages.length === 1;
+  const showIntro = messages.length === 1 && showIntroOnSingleMessage;
   return (
     <>
       {showIntro ? (

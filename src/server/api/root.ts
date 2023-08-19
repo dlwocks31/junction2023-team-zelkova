@@ -2,6 +2,7 @@ import { z } from "zod";
 import { exampleRouter } from "~/server/api/routers/example";
 import { createTRPCRouter, publicProcedure } from "~/server/api/trpc";
 import { dialogueQuery } from "../../openai/DialogueQuery";
+import { pickupWayQuery } from "../../openai/PickupWayQuery";
 import { RestaurantSuggestQuery } from "../../openai/RestaurantSuggestQuery";
 import { restaurantData } from "../mock-db";
 
@@ -59,6 +60,31 @@ export const appRouter = createTRPCRouter({
           showSuggestion: false,
           message: message,
         };
+      }
+    }),
+
+  getPickupWayMessage: publicProcedure
+    .input(
+      z.array(
+        z.object({
+          speaker: z.enum(["bot", "human"]),
+          content: z.string(),
+        })
+      )
+    )
+    .mutation(async ({ input }) => {
+      const message = await pickupWayQuery(
+        input.map((i) => ({
+          role: i.speaker === "bot" ? "system" : "user",
+          content: i.content,
+        }))
+      );
+      if (message) {
+        return {
+          message,
+        };
+      } else {
+        throw new Error("message is undefined");
       }
     }),
 });

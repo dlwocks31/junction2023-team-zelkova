@@ -5,7 +5,11 @@ import { api } from "../utils/api";
 export default function ChatIndex() {
   const sendMessageMutation = api.getRestaurantSuggestion.useMutation();
   const restaurants = api.findAllRestaurant.useQuery({});
-  const getNextMessage = async (message: string): Promise<Message> => {
+  const getNextMessage = async ({
+    message,
+  }: {
+    message: string;
+  }): Promise<Message> => {
     const data = await sendMessageMutation.mutateAsync({ text: message });
     if (data.showSuggestion) {
       const { message, suggestion } = data;
@@ -40,6 +44,7 @@ export default function ChatIndex() {
           },
         ]}
         getNextMessage={getNextMessage}
+        showIntroOnSingleMessage={true}
       />
     </main>
   );
