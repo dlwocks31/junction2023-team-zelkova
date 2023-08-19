@@ -9,8 +9,9 @@ import {
 } from "loplat-ui";
 import Link from "next/link";
 import { mutate } from "swr";
+import { calculateDistanceBetweenCoordinates } from "~/utils/math";
 
-export const INITIAL_CENTER: Coordinates = [37.5262411, 126.99289439];
+export const INITIAL_CENTER: Coordinates = [35.1663859, 129.1346072];
 export const INITIAL_ZOOM = 16;
 
 type Props = {
@@ -32,7 +33,7 @@ const Map = ({
     const mapOptions = {
       center: new window.naver.maps.LatLng(...initialCenter),
       zoom: initialZoom,
-      minZoom: 9,
+      minZoom: 16,
       scaleControl: false,
       mapDataControl: false,
       logoControlOptions: {
@@ -58,30 +59,41 @@ const Map = ({
   /** GPS **/
   useEffect(() => {
     const options = {
-      enableHighAccuracy: true,
-      timeout: 1000 * 5,
+      enableHighAccuracy: false,
+      timeout: 5 * 1000,
       maximumAge: 0,
     };
 
-    function success(pos: GeolocationPosition) {
+    let beforeRecord: Coordinates = [34.1650838, 129.1356638];
+
+    function success(pos: any) {
       const coords = pos.coords;
-      mutate("current", [coords.latitude, coords.longitude]);
-      mapRef.current?.setCenter(
-        new naver.maps.LatLng(coords.latitude, coords.longitude)
-      );
-      toast.info(`오차 범위는 ${Math.round(coords.accuracy)}m 입니다.`);
+      const newCoords: Coordinates = [
+        coords.latitude,
+        coords.longitude,
+      ] as Coordinates;
+
+      if (calculateDistanceBetweenCoordinates(beforeRecord, newCoords) > 0.01) {
+        toast.info(
+          calculateDistanceBetweenCoordinates(beforeRecord, newCoords) + ""
+        );
+        mutate("current", newCoords);
+        beforeRecord = newCoords;
+      }
     }
 
     function error() {
       toast.danger("현재 위치를 파악할 수 없습니다.");
     }
 
-    const timer = setInterval(() => {
-      navigator.geolocation.getCurrentPosition(success, error, options);
-    }, 3000);
+    const watchId = navigator.geolocation.watchPosition(
+      success,
+      error,
+      options
+    );
 
     return () => {
-      clearInterval(timer);
+      navigator.geolocation.clearWatch(watchId);
     };
   }, []);
 

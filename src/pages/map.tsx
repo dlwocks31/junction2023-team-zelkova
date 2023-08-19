@@ -1,15 +1,24 @@
 import { NextSeo } from "next-seo";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useSWR from "swr";
 import Marker, { generateParentMarkerIcon } from "~/components/map/Marker";
 import { Coordinates } from "~/types/map";
 import { api } from "~/utils/api";
 import Map from "../components/map/Map";
+import { calculateAngle } from "~/utils/math";
 
 export default function MapPage() {
   const restaurant = api.findAllRestaurant.useQuery({});
   const [map, setMap] = useState<null | naver.maps.Map>(null);
   const { data: currentLocation } = useSWR<Coordinates>("current");
+  const [paths, setPaths] = useState<Coordinates[]>([]);
+
+  useEffect(() => {
+    console.log(currentLocation);
+    if (currentLocation) {
+      setPaths((state) => [...state, currentLocation]);
+    }
+  }, [currentLocation]);
 
   return (
     <>
@@ -23,20 +32,27 @@ export default function MapPage() {
         }}
       >
         <Map onLoad={setMap} />
-        {map && currentLocation && (
-          <Marker
-            map={map}
-            coordinates={currentLocation}
-            icon={generateParentMarkerIcon("10")}
-          />
-        )}
-        {map && currentLocation && (
-          <Marker
-            map={map}
-            coordinates={currentLocation}
-            icon={generateParentMarkerIcon("10")}
-          />
-        )}
+        {map &&
+          paths
+            .filter(Boolean)
+            .map((coor, index) => (
+              <Marker
+                key={index}
+                map={map}
+                coordinates={coor}
+                icon={generateParentMarkerIcon(
+                  index === 0
+                    ? 0
+                    : calculateAngle(
+                        paths[index - 1]?.[0] ?? 0,
+                        paths[index - 1]?.[1] ?? 0,
+                        paths[index]?.[0] ?? 0,
+                        paths[index]?.[1] ?? 0
+                      ),
+                  index
+                )}
+              />
+            ))}
 
         {/** TODO: make restaurant look different */}
         {map &&

@@ -14,13 +14,17 @@ export interface ContentIcon {
   anchor: naver.maps.Point;
 }
 
-export function generateParentMarkerIcon(text: string): ContentIcon {
+export function generateParentMarkerIcon(
+  angle: number,
+  index?: number
+): ContentIcon {
   const size = 60;
   return {
     content: [
-      `<div style="width: ${size}px; height: ${size}px; border-radius: 50%;
+      `<div style="width: ${size}px; height: ${size}px; border-radius: 50%; transform: rotate(${angle}deg);
                            display: flex; align-items: center; justify-content: center">`,
       `<img src="/icon/footprint.svg" width="20" height="20" alt="발" />`,
+      `<p>${index}</p>`,
       `</div>`,
     ].join(""),
     anchor: new naver.maps.Point(size / 2, size / 2),
