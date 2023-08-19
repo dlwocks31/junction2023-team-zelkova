@@ -73,7 +73,7 @@ const Map = ({
         coords.longitude,
       ] as Coordinates;
 
-      if (calculateDistanceBetweenCoordinates(beforeRecord, newCoords) > 0.01) {
+      if (calculateDistanceBetweenCoordinates(beforeRecord, newCoords) > 0.05) {
         toast.info(
           calculateDistanceBetweenCoordinates(beforeRecord, newCoords) + ""
         );
