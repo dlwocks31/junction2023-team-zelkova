@@ -31,5 +31,48 @@ export default function GetToken() {
       });
   }, []);
 
-  return <div>token: {token}</div>;
+  /** notification **/
+  function notifyMe() {
+    navigator.serviceWorker.register("sw.js").then(() => {
+      if (!("Notification" in window)) {
+        // Check if the browser supports notifications
+        alert("This browser does not support desktop notification");
+      } else if (Notification.permission === "granted") {
+        // Check whether notification permissions have already been granted;
+        // if so, create a notification
+        navigator.serviceWorker.ready.then((registration) => {
+          setTimeout(() => {
+            registration.showNotification("It's lunch time!", {
+              body: "Wanna grab lunch together?",
+              icon: "/thumbnail-512x512.png",
+              vibrate: 200,
+            });
+          }, 10000);
+        });
+      } else if (Notification.permission !== "denied") {
+        // We need to ask the user for permission
+        Notification.requestPermission().then((permission) => {
+          // If the user accepts, let's create a notification
+          if (permission === "granted") {
+            navigator.serviceWorker.ready.then((registration) => {
+              setTimeout(() => {
+                registration.showNotification("It's lunch time!", {
+                  body: "Wanna grab lunch together?",
+                  icon: "/thumbnail-512x512.png",
+                  vibrate: 200,
+                });
+              }, 10000);
+            });
+          }
+        });
+      }
+    });
+  }
+
+  return (
+    <div>
+      token: {token}
+      <button onClick={notifyMe}>notify!!</button>
+    </div>
+  );
 }
