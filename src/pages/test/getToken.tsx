@@ -34,7 +34,7 @@ export default function GetToken() {
 
   /** notification **/
   function notifyMe() {
-    navigator.serviceWorker.register("sw.js").then(() => {
+    navigator.serviceWorker.register("/sw.js").then(() => {
       if (!("Notification" in window)) {
         // Check if the browser supports notifications
         alert("This browser does not support desktop notification");
