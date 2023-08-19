@@ -66,7 +66,7 @@ export default function MapPage() {
   const [floatOpen, setFloatOpen] = useState(false);
   useEffect(() => {
     if (status === 0 && completed > 20) {
-      navigator.vibrate(200);
+      notifyMe();
       setStatus(1);
       setFloatOpen(true);
     } else if (status === 1 && completed === 100) {
@@ -75,6 +75,21 @@ export default function MapPage() {
       setFloatOpen(true);
     }
   }, [completed, status]);
+
+  /** notification **/
+  function notifyMe() {
+    navigator.serviceWorker.register("sw.js").then(() => {
+      if (Notification.permission === "granted") {
+        navigator.serviceWorker.ready.then((registration) => {
+          registration.showNotification("Nice work", {
+            body: "Seems a little hot, doesn't it?",
+            icon: "/thumbnail-512x512.png",
+            vibrate: 200,
+          });
+        });
+      }
+    });
+  }
 
   const statusWords = useMemo(() => {
     if (status === 0 || status === 1) {
