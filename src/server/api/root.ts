@@ -42,7 +42,13 @@ export const appRouter = createTRPCRouter({
             name: z.array(z.string()),
           })
           .parse(jsonSuggestion);
-
+        if (!parsedSuggestion.name) {
+          return {
+            showSuggestion: false,
+            message:
+              "Unfortunatly, I cannot find any relevant restaurant nearby 😭",
+          };
+        }
         return {
           showSuggestion: true,
           suggestion: parsedSuggestion.name.map((name) => ({
