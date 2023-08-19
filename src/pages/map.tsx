@@ -16,7 +16,6 @@ import ProgressBar from "@ramonak/react-progress-bar";
 import { Restaurant } from "~/server/mock-db";
 
 export default function MapPage() {
-  const restaurant = api.findAllRestaurant.useQuery({});
   const [map, setMap] = useState<null | naver.maps.Map>(null);
   const { data: currentLocation } = useSWR<Coordinates>("currentLocation");
   const { data: currentRestaurant } = useSWR<Restaurant>("currentRestaurant");
@@ -43,13 +42,30 @@ export default function MapPage() {
     return Math.max(10, newCompleted > 90 ? 100 : newCompleted);
   }, [currentLocation, currentRestaurant]);
 
+  /** status **/
+  const [status, setStatus] = useState(0); // 1: on way, 2: almost there, 3: waiting for pickup
   useEffect(() => {
-    // test
-    alert(completed);
-    if (completed > 20) {
+    if (status === 0 && completed > 20) {
       navigator.vibrate(200);
+      setStatus(1);
+    } else if (status === 1 && completed > 90) {
+      navigator.vibrate(200);
+      setStatus(2);
+    } else if (status === 2 && completed === 100) {
+      navigator.vibrate(200);
+      setStatus(3);
     }
-  }, [completed]);
+  }, [completed, status]);
+
+  const statusWords = useMemo(() => {
+    if (status === 0 || status === 1) {
+      return "On the way to pick up!";
+    } else if (status === 2) {
+      return "We're here!";
+    } else if (status === 3) {
+      return "Waiting for pick up";
+    }
+  }, [status]);
 
   return (
     <>
@@ -63,7 +79,7 @@ export default function MapPage() {
         }}
       >
         <div className="panel">
-          <h2 className="status">On the way to pick up!</h2>
+          <h2 className="statusWords">{statusWords}</h2>
           <ProgressBar
             animateOnRender
             completed={completed}
