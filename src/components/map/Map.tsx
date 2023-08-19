@@ -53,7 +53,7 @@ const Map = ({
   /** GPS **/
   useEffect(() => {
     const options = {
-      enableHighAccuracy: false,
+      enableHighAccuracy: true,
       timeout: 5 * 1000,
       maximumAge: 0,
     };
