@@ -14,7 +14,8 @@ export const restaurantData: Restaurant[] = [
     picked: 12,
     crowdDegree: 3,
     latitude: 35.1659599,
-    longitude: 129.1319517,
+    longitude: 129.1339517,
+    // longitude: 129.1319517,
   },
   {
     name: "Pizza Alvolo",

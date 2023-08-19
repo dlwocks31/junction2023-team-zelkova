@@ -51,12 +51,15 @@ export default function MapPage() {
     if (status === 0 && completed > 20) {
       navigator.vibrate(200);
       setStatus(1);
+      alert("0->1");
     } else if (status === 1 && completed > 90) {
       navigator.vibrate(200);
       setStatus(2);
+      alert("1->2");
     } else if (status === 2 && completed === 100) {
       navigator.vibrate(200);
       setStatus(3);
+      alert("2->3");
     }
   }, [completed, status]);
 
