@@ -3,7 +3,7 @@ import { useState } from "react";
 export default function Test() {
   const [data, setData] = useState("");
   const [loading, setLoading] = useState(false);
-  const onClick = async (type: string, userQuery: string) => {
+  const onClick = async (type: string) => {
     setData("");
     try {
       setLoading(true);
@@ -12,7 +12,7 @@ export default function Test() {
         headers: new Headers({
           "Content-Type": "application/json",
         }),
-        body: JSON.stringify({ userQuery, type }),
+        body: JSON.stringify({ type }),
       });
       if (!response.ok || !response.body) {
         throw response.statusText;

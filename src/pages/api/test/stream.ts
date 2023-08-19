@@ -43,8 +43,8 @@ export default async function handler(
   res: NextApiResponse
 ) {
   const body = await req.json();
-  const { userQuery, type } = body;
-  console.log(type, userQuery);
+  const { type } = body;
+  console.log(type);
   const systemPrompt =
     type === "id-suggest" ? systemIDSuggestPrompt : systemDialoguePrompt;
   const encoder = new TextEncoder();
