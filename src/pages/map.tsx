@@ -35,7 +35,8 @@ export default function MapPage() {
       currentLocation,
       [currentRestaurant.latitude, currentRestaurant.longitude]
     );
-    const newCompleted = (1 - remainDistance / totalDistance) * 100;
+    const newCompleted =
+      (1 - Math.min(remainDistance / totalDistance, 1)) * 100;
     return Math.max(completed, newCompleted > 90 ? 100 : newCompleted);
   }, [currentLocation, currentRestaurant]);
 
