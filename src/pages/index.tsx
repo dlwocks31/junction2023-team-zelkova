@@ -1,8 +1,9 @@
 import dayjs from "dayjs";
 import { CircleLoading, IconButton, NearMeIcon } from "loplat-ui";
 import { NextSeo } from "next-seo";
-import { useState } from "react";
+import React, { useState } from "react";
 import { api } from "~/utils/api";
+import { Restaurant } from "../server/mock-db";
 
 function scrollToBottom() {
   setTimeout(() => {
@@ -12,6 +13,38 @@ function scrollToBottom() {
     }
   }, 0);
 }
+
+function RestaurantSelectComponent({
+  restaurant,
+  index,
+}: {
+  restaurant: Restaurant;
+  index: number;
+}) {
+  return (
+    <div className="flex gap-1">
+      <div>{index}.</div>
+      <div className="flex flex-col gap-1">
+        <div className="flex gap-1">
+          <div className="text">{restaurant.name} | 10m</div>
+        </div>
+        <div className="flex gap-1">
+          <BlueCircleComponent text="97 picked" />
+          <BlueCircleComponent text="Least crowded now!" />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function BlueCircleComponent({ text }: { text: string }) {
+  return (
+    <div className="rounded-full bg-[#427AD2] px-2 py-1 text-sm text-white">
+      {text}
+    </div>
+  );
+}
+
 export default function Home() {
   const restaurants = api.findAllRestaurant.useQuery({});
   const [messages, setMessages] = useState<
@@ -105,14 +138,22 @@ export default function Home() {
                 {message.content}
                 {message.menus && (
                   <div className="menus">
-                    {message.menus.map((menu) => (
-                      <div key={menu.name}>{menu.name}</div>
+                    {message.menus.map((menu, i) => (
+                      <React.Fragment key={i}>
+                        <RestaurantSelectComponent
+                          restaurant={menu}
+                          index={i + 1}
+                        />
+                        {i !== message.menus!.length - 1 && (
+                          <hr className="my-2 border-gray-400" />
+                        )}
+                      </React.Fragment>
                     ))}
                   </div>
                 )}
               </div>
             ))}
-        </div>
+          </div>
         )}
         <form
           className="sendMessage"
@@ -171,8 +212,8 @@ export default function Home() {
           .speech {
             position: relative;
             background-color: #dde9fc;
-            border-radius: 20px;
-            padding: 10px 32px;
+            border-radius: 18px;
+            padding: 12px 12px;
             margin: 16px auto;
             width: fit-content;
             max-width: 340px;
@@ -182,7 +223,6 @@ export default function Home() {
             &.bot {
               left: 16px;
               margin: 0;
-              border-radius: 8px;
               text-align: left;
               &::before {
                 bottom: 10px;
@@ -196,9 +236,9 @@ export default function Home() {
             &.human {
               left: -24px;
               margin-right: 0;
-              border-radius: 8px;
               background-color: #2e6ac8;
               text-align: right;
+              color: white;
               &::before {
                 bottom: 4px;
                 left: unset;

@@ -56,9 +56,9 @@ export default function MapPage() {
 
         {/** TODO: make restaurant look different */}
         {map &&
-          restaurant.data?.map((item) => (
+          restaurant.data?.map((item, i) => (
             <Marker
-              key={item.id}
+              key={i}
               map={map}
               coordinates={[item.latitude, item.longitude]}
               onClick={() => {

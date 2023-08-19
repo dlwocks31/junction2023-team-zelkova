@@ -1,27 +1,21 @@
 export interface Restaurant {
-  id: number;
   name: string;
 }
 
 export const restaurantData: Restaurant[] = [
   {
-    id: 3,
-    name: "BBQ Chicken Seoul National University Station Branch",
+    name: "BBQ Chicken",
   },
   {
-    id: 5,
-    name: "Domino's Pizza Seoul National University Station Branch",
+    name: "Domino's Pizza",
   },
   {
-    id: 7,
-    name: "Pizza Hut Busan Centum City Branch",
+    name: "Pizza Hut",
   },
   {
-    id: 11,
-    name: "Pizza Al Volo Haeundae Branch",
+    name: "Pizza Al Volo",
   },
   {
-    id: 13,
     name: "Nakseong Korean Cuisine",
   },
 ];
