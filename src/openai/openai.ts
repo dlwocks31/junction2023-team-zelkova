@@ -1,12 +1,10 @@
 import OpenAI from "openai";
 
-const openai = new OpenAI({
-  apiKey: "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",
-});
+const openai = new OpenAI();
 
 export const openaiStream = (
   model: "gpt-4" | "gpt-3.5-turbo",
-  messages: { role: "system" | "user"; content: string }[],
+  messages: { role: "system" | "user" | "assistant"; content: string }[],
   encode = true
 ) => {
   const encoder = new TextEncoder();
@@ -32,7 +30,7 @@ export const openaiStream = (
 
 export const openaiNonStream = (
   model: "gpt-4" | "gpt-3.5-turbo",
-  messages: { role: "system" | "user"; content: string }[]
+  messages: { role: "system" | "user" | "assistant"; content: string }[]
 ) => {
   return openai.chat.completions.create({
     messages,

@@ -149,7 +149,7 @@ export default function AlarmPage() {
             color: #fff;
             text-align: center;
             font-family: Noto Sans;
-            font-size: 24px;
+            font-size: 20px;
             font-style: normal;
             font-weight: 700;
             line-height: 22px;

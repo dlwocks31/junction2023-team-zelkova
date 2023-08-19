@@ -70,16 +70,19 @@ export default function Payment() {
           src={getHeadImageSrc()}
           alt=""
           onClick={handlePaymentImageClick}
-          style={{ width: "100%", cursor: "pointer" }}
+          style={{ width: "100%" }}
         />
-        <img
-          src={getImageSrc()}
-          alt=""
-          style={{ width: "100%", cursor: "pointer" }}
-        />
+        <img src={getImageSrc()} alt="" style={{ width: "100%" }} />
 
-        <button className="button" onClick={handleButtonClick}>
-          Pay 21,800 won now
+        <button
+          className={`button ${
+            paymentImageState === "initial" ? "disabled" : ""
+          }`}
+          onClick={(e) => {
+            if (paymentImageState !== "initial") handleButtonClick();
+          }}
+        >
+          Pay 21,800 won Now
         </button>
       </main>
       <style jsx>
@@ -99,10 +102,15 @@ export default function Payment() {
             color: #fff;
             text-align: center;
             font-family: Noto Sans;
-            font-size: 24px;
+            font-size: 20px;
             font-style: normal;
             font-weight: 700;
             line-height: 22px;
+          }
+          .button.disabled {
+            background: #c1c1c1;
+            border: 2px solid #c1c1c1;
+            cursor: not-allowed;
           }
         `}
       </style>

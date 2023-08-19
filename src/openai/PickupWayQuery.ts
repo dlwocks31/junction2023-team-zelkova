@@ -2,7 +2,7 @@ import { openaiNonStream } from "./openai";
 
 export function pickupWayQuery(
   interactions: {
-    role: "user" | "system";
+    role: "user" | "assistant";
     content: string;
   }[]
 ) {
