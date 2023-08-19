@@ -63,7 +63,8 @@ export default function Payment() {
           position: "relative",
           width: "100%",
           height: "100%",
-          overflow: "hidden",
+          overflow: "scroll",
+          paddingBottom: "100px",
         }}
       >
         <img
