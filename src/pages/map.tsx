@@ -14,7 +14,7 @@ import {
 } from "~/utils/math";
 import ProgressBar from "@ramonak/react-progress-bar";
 import { Restaurant } from "~/server/mock-db";
-import { Button, Modal } from "loplat-ui";
+import { Button, DoubleChevronUpIcon, IconButton, Modal } from "loplat-ui";
 import Image from "next/image";
 import { useRouter } from "next/router";
 
@@ -46,20 +46,17 @@ export default function MapPage() {
   }, [currentLocation, currentRestaurant]);
 
   /** status **/
-  const [status, setStatus] = useState(0); // 1: on way, 2: almost there, 3: waiting for pickup
+  const [status, setStatus] = useState(0); // 1: on way, 2: we're here, 3: waiting for pickup, 4: chatting
+  const [floatOpen, setFloatOpen] = useState(false);
   useEffect(() => {
     if (status === 0 && completed > 20) {
       navigator.vibrate(200);
       setStatus(1);
-      alert("0->1");
-    } else if (status === 1 && completed > 90) {
+      setFloatOpen(true);
+    } else if (status === 1 && completed === 100) {
       navigator.vibrate(200);
       setStatus(2);
-      alert("1->2");
-    } else if (status === 2 && completed === 100) {
-      navigator.vibrate(200);
-      setStatus(3);
-      alert("2->3");
+      setFloatOpen(true);
     }
   }, [completed, status]);
 
@@ -74,7 +71,7 @@ export default function MapPage() {
   }, [status]);
 
   /** modal **/
-  const [open, setOpen] = useState(false);
+  const [modalOpen, setModalOpen] = useState(false);
   const router = useRouter();
 
   return (
@@ -96,17 +93,25 @@ export default function MapPage() {
             bgColor="#2E6AC8"
             isLabelVisible={false}
           />
-          <Button
+          <button
             onClick={() => {
-              setOpen(true);
+              setModalOpen(true);
             }}
           >
             (test)show modal
-          </Button>
+          </button>
+          <button
+            onClick={() => {
+              setStatus(status + 1);
+              setFloatOpen(true);
+            }}
+          >
+            (test)increase status
+          </button>
           <Modal
-            isOpen={open}
+            isOpen={modalOpen}
             onClose={() => {
-              setOpen(false);
+              setModalOpen(false);
             }}
           >
             <div
@@ -139,6 +144,89 @@ export default function MapPage() {
               </div>
             </div>
           </Modal>
+        </div>
+        <div
+          className="floatChat"
+          style={{
+            transform: `translateY(${floatOpen ? "0%" : "-100%"})`,
+          }}
+        >
+          <hr className="mb-4 mt-2 w-full" />
+          {status === 1 && (
+            <>
+              <div className={`speech bot`}>
+                Nice work 😊 It's 26 degrees today. Seems a little hot, doesn't
+                it?
+              </div>
+              <IconButton
+                onClick={() => {
+                  setFloatOpen(false);
+                }}
+                variant="ghost2"
+                borderless
+              >
+                <DoubleChevronUpIcon size={16} suffixForId="up" />
+              </IconButton>
+            </>
+          )}
+          {status === 2 && (
+            <>
+              <div className={`speech bot`}>
+                Wow, great job 😚 Did you finish the pickup?
+              </div>
+              <div className="mb-4 mt-4 flex w-full justify-end gap-4">
+                <Button
+                  size="sm"
+                  onClick={() => {
+                    setModalOpen(true);
+                  }}
+                >
+                  Yes
+                </Button>
+                <Button
+                  size="sm"
+                  onClick={() => {
+                    setStatus(3);
+                  }}
+                >
+                  Not yet
+                </Button>
+              </div>
+            </>
+          )}
+          {status === 3 && (
+            <>
+              <div className={`speech bot`}>
+                I see! Then, why don't you talk to me some more?
+              </div>
+              <div className="mb-4 mt-4 flex w-full justify-end gap-4">
+                <Button
+                  size="sm"
+                  onClick={() => {
+                    setStatus(4);
+                  }}
+                >
+                  Good
+                </Button>
+                <Button
+                  size="sm"
+                  onClick={() => {
+                    setFloatOpen(false);
+                    setTimeout(() => {
+                      setModalOpen(true);
+                    }, 3000);
+                  }}
+                >
+                  It's okay
+                </Button>
+              </div>
+            </>
+          )}
+          {status === 4 && (
+            <div style={{ width: "100%", height: "calc(100vh - 140px)" }}>
+              chatting...
+            </div>
+          )}
         </div>
         <div style={{ width: "100%", height: "100%" }}>
           <Map onLoad={setMap} />
@@ -187,9 +275,12 @@ export default function MapPage() {
 
       <style jsx>{`
         .panel {
+          position: relative;
+          z-index: 2;
           padding: 18px;
           width: 100%;
           height: 120px;
+          background: white;
         }
         h2.status {
           font-size: 20px;
@@ -228,6 +319,45 @@ export default function MapPage() {
               gap: 16px;
               color: #000000;
             }
+          }
+        }
+
+        .floatChat {
+          position: absolute;
+          top: 120px; // TODO: change value
+          left: 0;
+          width: 100%;
+          padding: 0 20px 4px;
+          background: white;
+          z-index: 1;
+          transition: transform 0.5s;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+          border-radius: 0px 0px 15px 15px;
+
+          .speech {
+            position: relative;
+            background-color: #dde9fc;
+            border-radius: 18px;
+            padding: 12px 12px;
+            width: fit-content;
+            max-width: 340px;
+            border: none;
+            left: 0;
+            margin: 0;
+            text-align: left;
+          }
+          .speech::before {
+            content: "";
+            position: absolute;
+            bottom: 10px;
+            left: -20px;
+            transform: translateX(0);
+            border-style: solid;
+            border-width: 11px;
+            border-color: transparent #dde9fc transparent transparent;
           }
         }
       `}</style>

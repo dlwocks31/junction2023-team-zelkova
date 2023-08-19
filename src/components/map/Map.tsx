@@ -6,7 +6,7 @@ import { mutate } from "swr";
 import { calculateDistanceBetweenCoordinates } from "~/utils/math";
 
 export const INITIAL_CENTER: Coordinates = [35.1663859, 129.1346072];
-export const INITIAL_ZOOM = 16;
+export const INITIAL_ZOOM = 17;
 
 type Props = {
   initialCenter?: Coordinates;
@@ -67,7 +67,7 @@ const Map = ({
         coords.longitude,
       ] as Coordinates;
 
-      if (calculateDistanceBetweenCoordinates(beforeRecord, newCoords) > 0.05) {
+      if (calculateDistanceBetweenCoordinates(beforeRecord, newCoords) > 0.02) {
         mutate("currentLocation", newCoords);
         beforeRecord = newCoords;
       }
