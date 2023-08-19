@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { api } from "~/utils/api";
 export default function Test() {
-  const { data: queryData } = api.getRestaurantSuggestion.useQuery({
-    text: "피자 먹고싶어",
-  });
+  const { data: queryData } = api.getRestaurantSuggestion.useQuery(
+    { text: "햄버거 먹고싶어" },
+    { refetchOnWindowFocus: false }
+  );
 
   const [data, setData] = useState("");
   const [loading, setLoading] = useState(false);
@@ -11,7 +12,7 @@ export default function Test() {
     setData("");
     try {
       setLoading(true);
-      const response = await fetch(`http://localhost:3000/api/test/stream`, {
+      const response = await fetch(`/api/test/stream`, {
         method: "POST",
         headers: new Headers({
           "Content-Type": "application/json",
