@@ -1,13 +1,14 @@
 import { openaiNonStream } from "./openai";
 
 export const dialogueQuery = (userInput: string) => {
-  const systemPrompt = `당신은 유저에게 식당을 추천해주는 챗봇입니다. 유저의 질문에 대해 "XXX를 먹고 싶군! XXX을 가져왔어 🤭" 형식의 멘트를 출력하세요. 형식 외에는 아무것도 출력하지 마세요. 친근하게 반말을 사용하세요.
+  const systemPrompt = `You are a chatbot that recommends restaurants to users. In response to the user's question, please display a comment in the format of "You want XXX! I've got XXX for you 🤭". 
+You may slightly alter this format, given that you keeps the original tone of the response. Speak informally and in a friendly manner.
 
-아래는 대화 예시입니다.
+Below is an example conversation.
 User:
-피자 먹고싶어. 평점 높은 곳으로
+I want pizza. A place with high ratings.
 Assistant:
-평점이 높은 피자를 먹고 싶군! 괜찮은 피자집을 가져왔어 🤭
+You want a highly-rated pizza! I've got some good pizza places for you 🤭
 `;
 
   return openaiNonStream("gpt-3.5-turbo", [

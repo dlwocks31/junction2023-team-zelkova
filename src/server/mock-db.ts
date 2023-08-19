@@ -6,22 +6,22 @@ export interface Restaurant {
 export const restaurantData: Restaurant[] = [
   {
     id: 3,
-    name: "BBQ치킨 서울대입구역점",
+    name: "BBQ Chicken Seoul National University Station Branch",
   },
   {
     id: 5,
-    name: "도미노피자 서울대입구역점",
+    name: "Domino's Pizza Seoul National University Station Branch",
   },
   {
     id: 7,
-    name: "피자헛 부산센텀점",
+    name: "Pizza Hut Busan Centum City Branch",
   },
   {
     id: 11,
-    name: "피자알볼로 해운대점",
+    name: "Pizza Al Volo Haeundae Branch",
   },
   {
     id: 13,
-    name: "낙성백반",
+    name: "Nakseong Korean Cuisine",
   },
 ];

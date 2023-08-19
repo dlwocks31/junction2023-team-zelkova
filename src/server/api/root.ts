@@ -26,7 +26,7 @@ export const appRouter = createTRPCRouter({
 
   getRestaurantSuggestion: publicProcedure
     .input(z.object({ text: z.string() }))
-    .query(async ({ input }) => {
+    .mutation(async ({ input }) => {
       const restaurants = restaurantData;
       const queryResult = await RestaurantSuggestQuery(input.text, restaurants);
       const message = queryResult.choices[0]?.message?.content;
@@ -42,7 +42,8 @@ export const appRouter = createTRPCRouter({
             name: z.array(z.string()),
           })
           .parse(jsonSuggestion);
-        if (!parsedSuggestion.name) {
+        if (parsedSuggestion.name.length === 0) {
+          console.log("parsedSuggestion.name is undefined");
           return {
             showSuggestion: false,
             message:
