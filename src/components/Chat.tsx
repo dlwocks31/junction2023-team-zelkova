@@ -64,7 +64,7 @@ export function ChatComponent({
 }) {
   function scrollToBottom() {
     setTimeout(() => {
-      const element = document.getElementsByClassName("chatting")[0];
+      const element = document.getElementsByClassName("sendMessage")[0];
       if (element) {
         element.scrollTop = element.scrollHeight;
       }
