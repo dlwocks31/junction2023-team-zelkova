@@ -279,7 +279,7 @@ export function ChatComponent({
           }
           .sendMessage {
             width: 100%;
-            padding: 12px 6px 12px 12px;
+            padding: 12px 6px 15px 12px;
             display: flex;
             background: #f1f1f1;
 
