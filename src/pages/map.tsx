@@ -369,6 +369,7 @@ export default function MapPage() {
           align-items: center;
           background: white;
           padding: 40px 16px 20px;
+          border-radius: 10px;
 
           .title {
             font-size: 22px;
