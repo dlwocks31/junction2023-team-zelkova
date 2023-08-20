@@ -115,7 +115,7 @@ export function ChatComponent({
         <div className="chatting flex-grow">
           <p className="time">{dayjs().format("YYYY.MM.DD HH:mm a")}</p>
           {messages.map((message, index) => (
-            <Fade direction="up" key={index} fraction={0}>
+            <Fade direction="up" key={index} fraction={0} triggerOnce>
               <div className={`speech ${message.speaker}`}>
                 {message.speaker === "bot" && (
                   <div className="absolute -top-12 left-60 h-20 w-20">
