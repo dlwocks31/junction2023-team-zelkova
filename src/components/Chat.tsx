@@ -2,9 +2,9 @@ import dayjs from "dayjs";
 import { CircleLoading, IconButton, NearMeIcon } from "loplat-ui";
 import { useRouter } from "next/router";
 import React, { useState } from "react";
+import { Fade } from "react-awesome-reveal";
 import { mutate } from "swr";
 import { type Restaurant } from "~/server/mock-db";
-import { Fade } from "react-awesome-reveal";
 
 export interface Message {
   speaker: "bot" | "human";
@@ -74,6 +74,7 @@ export function ChatComponent({
   const [messages, setMessages] = useState<Message[]>(initialMessages);
   const [currentMessage, setCurrentMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [inputFocused, setInputFocused] = useState(false);
   const sendMessage = () => {
     if (!currentMessage.trim()) return;
     const newMessages = [
@@ -98,7 +99,10 @@ export function ChatComponent({
   return (
     <>
       {showIntro ? (
-        <div className="intro">
+        <div
+          className="intro"
+          style={{ paddingTop: inputFocused ? "400px" : "200px" }} // FIXME: hack for virtual keyboard
+        >
           <div className="rabbit">
             <Fade direction="up">
               <div className="speech">{messages[0]?.content}</div>
@@ -111,7 +115,10 @@ export function ChatComponent({
           </div>
         </div>
       ) : (
-        <div className="chatting">
+        <div
+          className="chatting"
+          style={{ paddingTop: inputFocused ? "180px" : "0px" }} // FIXME: hack for virtual keyboard
+        >
           <p className="time">{dayjs().format("YYYY.MM.DD HH:mm a")}</p>
           {messages.map((message, index) => (
             <Fade direction="up" key={index}>
@@ -179,6 +186,12 @@ export function ChatComponent({
             onChange={(e) => {
               setCurrentMessage(e.target.value);
             }}
+            onFocus={() => {
+              setInputFocused(true);
+            }}
+            onBlur={() => {
+              setInputFocused(false);
+            }}
           />
           <IconButton variant="ghost2" borderless>
             {isLoading ? (
@@ -199,7 +212,6 @@ export function ChatComponent({
           }
           .intro {
             position: relative;
-            padding-top: 200px;
             width: 100%;
 
             .rabbit {
