@@ -97,12 +97,9 @@ export function ChatComponent({
   const router = useRouter();
   const showIntro = messages.length === 1 && showIntroOnSingleMessage;
   return (
-    <>
+    <div className="flex flex-grow flex-col">
       {showIntro ? (
-        <div
-          className="intro"
-          style={{ paddingTop: inputFocused ? "400px" : "200px" }} // FIXME: hack for virtual keyboard
-        >
+        <div className="intro flex flex-grow items-center">
           <div className="rabbit">
             <Fade direction="up">
               <div className="speech">{messages[0]?.content}</div>
@@ -115,10 +112,7 @@ export function ChatComponent({
           </div>
         </div>
       ) : (
-        <div
-          className="chatting"
-          style={{ paddingTop: inputFocused ? "180px" : "0px" }} // FIXME: hack for virtual keyboard
-        >
+        <div className="chatting flex-grow">
           <p className="time">{dayjs().format("YYYY.MM.DD HH:mm a")}</p>
           {messages.map((message, index) => (
             <Fade direction="up" key={index}>
@@ -159,7 +153,7 @@ export function ChatComponent({
         </div>
       )}
       <form
-        className="sendMessage flex flex-col gap-2"
+        className="sendMessage flex flex-col gap-2 self-end"
         onSubmit={(e) => {
           e.preventDefault();
           sendMessage();
@@ -179,9 +173,9 @@ export function ChatComponent({
           </div>
         )}
 
-        <div className="flex">
+        <div className="flex w-full">
           <input
-            className="input"
+            className="input flex-grow"
             value={currentMessage}
             onChange={(e) => {
               setCurrentMessage(e.target.value);
@@ -284,9 +278,6 @@ export function ChatComponent({
             border-color: #dde9fc transparent transparent transparent;
           }
           .sendMessage {
-            position: fixed;
-            bottom: 0;
-            left: 0;
             width: 100%;
             padding: 12px 6px 12px 12px;
             display: flex;
@@ -300,6 +291,6 @@ export function ChatComponent({
           }
         `}
       </style>
-    </>
+    </div>
   );
 }
