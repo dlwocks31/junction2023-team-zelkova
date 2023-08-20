@@ -121,7 +121,12 @@ export default function MapPage() {
         }}
       >
         <div className="panel">
-          <h2 className="statusWords">{statusWords}</h2>
+          <h2
+            className="statusWords"
+            onClick={() => setStatus((status) => status + 1)}
+          >
+            {statusWords}
+          </h2>
           <ProgressBar
             animateOnRender
             completed={completed}
