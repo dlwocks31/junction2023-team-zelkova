@@ -170,12 +170,7 @@ export default function MapPage() {
               }}
             >
               <h2 className="title">Congrats!</h2>
-              <Image
-                src="/image/congrats.png"
-                alt=""
-                width={220}
-                height={254}
-              />
+              <img src="/gif/congrats.gif" alt="" width={220} height={254} />
               <div className="achievements">
                 <div className="row">
                   <Image src="/icon/trophy.png" alt="" width={52} height={48} />
