@@ -55,7 +55,7 @@ export default function MapPage() {
       currentLocation,
       [currentRestaurant.latitude, currentRestaurant.longitude]
     );
-    if (remainDistance < 0.1) return 100;
+    if (remainDistance < 0.05) return 100;
     const newCompleted =
       (1 - Math.min(remainDistance / totalDistance, 1)) * 100;
     return Math.max(10, newCompleted > 90 ? 100 : newCompleted);
