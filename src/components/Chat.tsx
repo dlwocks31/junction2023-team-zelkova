@@ -64,7 +64,7 @@ export function ChatComponent({
 }) {
   function scrollToBottom() {
     setTimeout(() => {
-      const element = document.getElementsByClassName("sendMessage")[0];
+      const element = document.getElementsByClassName("chatting")[0];
       if (element) {
         element.scrollTop = element.scrollHeight;
       }
@@ -97,7 +97,7 @@ export function ChatComponent({
   const router = useRouter();
   const showIntro = messages.length === 1 && showIntroOnSingleMessage;
   return (
-    <div className="flex flex-grow flex-col">
+    <div className="flex h-full flex-grow flex-col">
       {showIntro ? (
         <div className="intro flex flex-grow items-center">
           <div className="rabbit">
