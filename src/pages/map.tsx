@@ -96,7 +96,7 @@ export default function MapPage() {
       return "On the way to pick up!";
     } else if (status === 2) {
       return "We're here!";
-    } else if (status === 3) {
+    } else if (status >= 3) {
       return "Waiting for pick up";
     }
   }, [status]);
@@ -113,17 +113,21 @@ export default function MapPage() {
     <>
       <NextSeo title="pickup" description="way to pick up the food" />
       <main
+        className="flex flex-col"
         style={{
           position: "relative",
           width: "100%",
-          height: "100%",
+          height: "100vh",
           overflow: "hidden",
         }}
       >
         <div className="panel">
           <h2
             className="statusWords"
-            onClick={() => setStatus((status) => status + 1)}
+            onClick={() => {
+              setStatus((status) => status + 1);
+              setFloatOpen(true);
+            }}
           >
             {statusWords}
           </h2>
@@ -191,7 +195,7 @@ export default function MapPage() {
           </Modal>
         </div>
         <div
-          className="floatChat"
+          className="floatChat flex flex-grow"
           style={{
             transform: `translateY(${floatOpen ? "0%" : "-100%"})`,
           }}
@@ -268,7 +272,7 @@ export default function MapPage() {
             </>
           )}
           {status === 4 && (
-            <div style={{ width: "100%", height: "calc(100vh - 140px)" }}>
+            <div style={{ width: "100%" }} className="flex flex-grow">
               <ChatComponent
                 initialMessages={[
                   {
@@ -296,56 +300,58 @@ export default function MapPage() {
             </div>
           )}
         </div>
-        <div style={{ width: "100%", height: "100%" }}>
-          <Map onLoad={setMap} />
-          {map &&
-            paths
-              .filter(Boolean)
-              .map((coor, index) => (
-                <Marker
-                  key={index}
-                  map={map}
-                  coordinates={coor}
-                  icon={generateFootprintMarkerIcon(
-                    index === 0
-                      ? 0
-                      : calculateAngle(
-                          paths[index - 1]?.[0] ?? 0,
-                          paths[index - 1]?.[1] ?? 0,
-                          paths[index]?.[0] ?? 0,
-                          paths[index]?.[1] ?? 0
-                        ),
-                    index
-                  )}
-                />
-              ))}
+        {!(status == 4 && floatOpen) && (
+          <div style={{ width: "100%", height: "100%" }}>
+            <Map onLoad={setMap} />
+            {map &&
+              paths
+                .filter(Boolean)
+                .map((coor, index) => (
+                  <Marker
+                    key={index}
+                    map={map}
+                    coordinates={coor}
+                    icon={generateFootprintMarkerIcon(
+                      index === 0
+                        ? 0
+                        : calculateAngle(
+                            paths[index - 1]?.[0] ?? 0,
+                            paths[index - 1]?.[1] ?? 0,
+                            paths[index]?.[0] ?? 0,
+                            paths[index]?.[1] ?? 0
+                          ),
+                      index
+                    )}
+                  />
+                ))}
 
-          {map && currentLocation && (
-            <Marker
-              map={map}
-              coordinates={currentLocation}
-              icon={generateFootprintMarkerIcon(0)}
-            />
-          )}
+            {map && currentLocation && (
+              <Marker
+                map={map}
+                coordinates={currentLocation}
+                icon={generateFootprintMarkerIcon(0)}
+              />
+            )}
 
-          {map && currentRestaurant && (
-            <Marker
-              map={map}
-              coordinates={[
-                currentRestaurant.latitude,
-                currentRestaurant.longitude,
-              ]}
-              icon={generateRestaurantMarkerIcon()}
-            />
-          )}
-        </div>
+            {map && currentRestaurant && (
+              <Marker
+                map={map}
+                coordinates={[
+                  currentRestaurant.latitude,
+                  currentRestaurant.longitude,
+                ]}
+                icon={generateRestaurantMarkerIcon()}
+              />
+            )}
+          </div>
+        )}
       </main>
 
       <style jsx>{`
         .panel {
           position: relative;
           z-index: 2;
-          padding: 18px;
+          padding: 22px 18px;
           width: 100%;
           height: 120px;
           background: white;
@@ -391,9 +397,6 @@ export default function MapPage() {
         }
 
         .floatChat {
-          position: absolute;
-          top: 120px; // TODO: change value
-          left: 0;
           width: 100%;
           background: white;
           z-index: 1;
